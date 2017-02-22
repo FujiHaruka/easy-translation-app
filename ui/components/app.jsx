@@ -1,7 +1,12 @@
 import React from 'react'
 import { Component } from 'reflux'
 import { Store, Actions } from '../store'
-import { Navbar, NavItem } from 'react-materialize'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import AppBar from 'material-ui/AppBar'
+import FlatButton from 'material-ui/FlatButton'
+import { Link } from 'react-router'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+injectTapEventPlugin()
 
 export default class App extends Component {
   constructor () {
@@ -11,19 +16,32 @@ export default class App extends Component {
 
   render () {
     const s = this
+    console.log(s)
     let { loggedIn } = s.state
     return (
-      <div>
-        <Navbar brand='Easy Translation' right>
-          <NavItem href='/dashboard'>Dashboard</NavItem>
-          {
-            loggedIn
-            ? <NavItem href='/login'>Sign out</NavItem>
-            : <NavItem href='/login'>Sign in</NavItem>
-          }
-        </Navbar>
-        { s.props.children}
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <AppBar
+            title='Easy Translation'
+            showMenuIconButton={false}
+            iconElementRight={s.signButton(loggedIn)}
+            />
+          { s.props.children}
+        </div>
+      </MuiThemeProvider>
+    )
+  }
+
+  signButton (loggedIn) {
+    return (
+      <FlatButton
+        >
+        <Link
+          to='/login'
+          style={{ color: 'white' }}>
+          { loggedIn ? 'Sign out' : 'Sign in' }
+        </Link>
+      </FlatButton>
     )
   }
 }
