@@ -17,6 +17,10 @@
     "email": "fizzyjohn316@gmail.com",
     "url": "https://github.com/FujiHaruka"
   },
+  "bugs": {
+    "url": "https://github.com/FujiHaruka/easy-translation-app/issues"
+  },
+  "homepage": "https://github.com/FujiHaruka/easy-translation-app#readme",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^6.7.4",
