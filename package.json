@@ -1,0 +1,46 @@
+{
+  "name": "easy-translation-app",
+  "version": "1.0.0",
+  "description": "Translation support web application",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server/app.js",
+    "watch": "webpack --config webpack.config.dev.js --watch"
+  },
+  "repository": "FujiHaruka/easy-translation-app",
+  "keywords": [
+    "React",
+    "translation"
+  ],
+  "author": {
+    "name": "Fuji Haruka",
+    "email": "fizzyjohn316@gmail.com",
+    "url": "https://github.com/FujiHaruka"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^6.7.4",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "postcss-loader": "^1.3.1",
+    "postcss-modules-values": "^1.2.2",
+    "react": "^15.4.2",
+    "react-css-modules": "^4.1.0",
+    "react-dom": "^15.4.2",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  },
+  "engines": {
+    "node": ">=6",
+    "npm": ">=3"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "sg-server": "^1.4.3"
+  }
+}
