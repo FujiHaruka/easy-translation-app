@@ -1,17 +1,15 @@
-const Server = require('sugo-hub')
-const sendfile = require('koa-sendfile')
+const Hub = require('sugo-hub')
+const Actor = require('sugo-actor')
 const { port } = require('../env')
 const { join } = require('path')
-const co = require('co')
+const { actorModule } = require('./actor_module')
+const endpoints = require('./endpoints')
 
-let server = Server({
+let server = Hub({
   static: [ join(__dirname, '../public') ],
-  endpoints: {
-    '/*': {
-      GET: (ctx) => co(function * () {
-        yield sendfile(ctx, join(__dirname, '../public/index.html'))
-      })
-    }
+  endpoints,
+  localActors: {
+    'actor': Actor(actorModule)
   }
 })
 
