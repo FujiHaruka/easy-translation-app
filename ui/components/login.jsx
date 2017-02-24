@@ -1,11 +1,8 @@
-import React from 'react'
-import { Component } from 'reflux'
-import { Store, Actions } from '../store'
+import { Component } from 'react'
 
 export default class Login extends Component {
   constructor () {
     super()
-    this.store = Store
   }
 
   render () {

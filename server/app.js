@@ -1,4 +1,4 @@
-const Server = require('sg-server')
+const Server = require('sugo-hub')
 const sendfile = require('koa-sendfile')
 const { port } = require('../env')
 const { join } = require('path')
@@ -15,4 +15,6 @@ let server = Server({
   }
 })
 
+console.log(`Server listening on port ${port.APP}`)
 server.listen(port.APP)
+      .catch(e => { console.error(e) })

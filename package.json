@@ -36,6 +36,9 @@
     "react": "^15.4.2",
     "react-css-modules": "^4.1.0",
     "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "react-tap-event-plugin": "^2.0.1",
+    "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
@@ -47,9 +50,8 @@
   "dependencies": {
     "co": "^4.6.0",
     "koa-sendfile": "^2.0.0",
-    "react-router": "^3.0.2",
-    "react-tap-event-plugin": "^2.0.1",
-    "reflux": "^6.2.0",
-    "sg-server": "^1.4.3"
+    "sugo-actor": "^4.6.4",
+    "sugo-caller": "^3.2.6",
+    "sugo-hub": "^5.3.2"
   }
 }

@@ -1,6 +1,4 @@
-import React from 'react'
-import { Component } from 'reflux'
-import { Store, Actions } from '../store'
+import { Component } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
