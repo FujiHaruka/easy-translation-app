@@ -1,17 +1,16 @@
 /**
  * Local actor module
  */
-const co = require('co')
 const { Module } = require('sugo-actor')
-const auth = require('./helpers/auth')
+const checkAuth = require('./helpers/check_auth')
 const genToken = require('./helpers/gen_token')
 const {
   Token
 } = require('./models')
 
 const actorModule = new Module({
-  requestToken ({ userKey, password }) {
-    let ok = auth(userKey, password)
+  requestToken: async ({ userKey, password }) => {
+    let ok = await checkAuth({ userKey, password })
     if (!ok) {
       return {
         err: {
@@ -22,22 +21,20 @@ const actorModule = new Module({
     let tokenInfo = genToken(userKey)
     return tokenInfo
   },
-  validateToken ({ userKey, token }) {
-    return co(function * () {
-      let data = yield Token.findOne({ token }).exec()
-      let now = new Date()
-      let invalid = !data || userKey !== data.userKey || now > data.until
-      if (invalid) {
-        return {
-          err: {
-            message: 'Invalid token'
-          }
+  validateToken: async ({ userKey, token }) => {
+    let data = await Token.findOne({ token }).exec()
+    let now = new Date()
+    let invalid = !data || userKey !== data.userKey || now > data.until
+    if (invalid) {
+      return {
+        err: {
+          message: 'Invalid token'
         }
       }
-      return {
-        ok: true
-      }
-    })
+    }
+    return {
+      ok: true
+    }
   }
 })
 

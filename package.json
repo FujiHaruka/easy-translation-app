@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Translation support web application",
   "scripts": {
-    "test": "NODE_ENV=test mocha --recursive",
-    "start": "node server/app.js",
+    "test": "NODE_ENV=test mocha --recursive --harmony-async-await",
+    "start": "node --harmony-async-await server/app.js",
     "watch": "webpack --config webpack.config.dev.js --watch"
   },
   "repository": "FujiHaruka/easy-translation-app",

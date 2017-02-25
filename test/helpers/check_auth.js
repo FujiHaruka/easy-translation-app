@@ -1,5 +1,4 @@
 const assert = require('assert')
-const co = require('co')
 const mongoose = require('mongoose')
 const { url } = require('../../env')
 const models = require('../../server/models')
@@ -10,22 +9,22 @@ const calcPasswordHash = require('../../server/helpers/calc_password_hash')
 const checkAuth = require('../../server/helpers/check_auth')
 
 describe('checkAuth', function () {
-  before(() => co(function * () {
+  before(async () => {
     mongoose.connect(url.MONGO)
-    yield User.remove({}).exec()
-  }))
+    await User.remove({}).exec()
+  })
 
-  after(() => co(function * () {
+  after(async () => {
     mongoose.disconnect()
-  }))
+  })
 
-  it('check', () => co(function * () {
+  it('check', async () => {
     let userKey = 'demo'
     let password = 'demo'
     let passwordHash = calcPasswordHash(password)
-    yield User({ userKey, passwordHash }).save()
+    await User({ userKey, passwordHash }).save()
 
-    let ok = yield checkAuth({ userKey, password })
+    let ok = await checkAuth({ userKey, password })
     assert.ok(ok)
 
     let invalidUsers = [{
@@ -36,10 +35,10 @@ describe('checkAuth', function () {
       password: 'demo'
     }]
     for (let invalidUser of invalidUsers) {
-      let ok = yield checkAuth(invalidUser)
+      let ok = await checkAuth(invalidUser)
       assert.ok(!ok)
     }
-  }))
+  })
 })
 
 /* global describe before after it */
