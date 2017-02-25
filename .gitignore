@@ -32,4 +32,5 @@ tmp
 .npmrc
 .DS_Store
 
+var
 public/js
