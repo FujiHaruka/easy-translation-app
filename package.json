@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "co": "^4.6.0",
+    "commander": "^2.9.0",
     "koa-sendfile": "^2.0.0",
     "mongoose": "^4.8.4",
     "sugo-actor": "^4.6.4",
