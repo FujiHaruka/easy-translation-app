@@ -27,6 +27,7 @@ const actorModule = new Module({
     let invalid = !data || userKey !== data.userKey || now > data.until
     if (invalid) {
       return {
+        ok: false,
         err: {
           message: 'Invalid token'
         }
