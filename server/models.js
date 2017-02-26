@@ -59,6 +59,14 @@ const Doc = Model('doc', {
     type: String,
     required: true
   },
+  languages: {
+    original: {
+      type: String
+    },
+    translated: {
+      type: String
+    }
+  },
   updateAt: {
     type: Date,
     default: Date.now
