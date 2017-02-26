@@ -30,7 +30,7 @@ module.exports = {
       languages,
       filename
     }
-    let sentences = parseDocText(id, text)
+    let sentences = parseDocText(id, text, { languages })
     await Doc(doc).save()
     await sentences.map(s => Sentence(s).save())
     return OK
