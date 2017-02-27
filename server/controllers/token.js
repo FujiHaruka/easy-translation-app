@@ -25,7 +25,7 @@ module.exports = {
     return OK
   },
 
-  validateToken: async ({ userKey, token, safe = true }) => {
+  validateToken: async ({ userKey, token }) => {
     let data = await Token.findOne({ token }).exec()
     let now = new Date()
     let invalid = !data || userKey !== data.userKey || now > data.until

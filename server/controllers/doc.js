@@ -33,7 +33,10 @@ module.exports = {
     let sentences = parseDocText(id, text, { languages })
     await Doc(doc).save()
     await sentences.map(s => Sentence(s).save())
-    return OK
+    return {
+      ok: true,
+      created: doc
+    }
   },
 
   deleteDoc: async ({ id }) => {
@@ -42,6 +45,7 @@ module.exports = {
       return ERR('Not found document')
     }
     await Doc.remove({ id }).exec()
+    await Sentence.remove({ did: id })
     return OK
   },
 
