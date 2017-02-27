@@ -1,21 +1,24 @@
-import { Component } from 'react'
+import React from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
 import { Link } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+import { getState, Actions } from 'jumpstate'
 injectTapEventPlugin()
 
-export default class App extends Component {
+export default class App extends React.Component {
   constructor () {
     super()
-    this.store = Store
+    Actions.connectCaller()
+    setTimeout(() => {
+      Actions.requestToken({userKey: 'demo', password: 'demo'})
+    }, 1000)
   }
 
   render () {
     const s = this
-    console.log(s)
-    let { loggedIn } = s.state
+    let { loggedIn } = getState().user
     return (
       <MuiThemeProvider>
         <div>

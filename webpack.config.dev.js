@@ -6,7 +6,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const util = require('util')
 
 module.exports = {
-  entry: resolve('./ui/index'),
+  entry: [
+    'babel-polyfill',
+    resolve('./ui/index')
+  ],
   output: {
     path: resolve('./public/js'),
     filename: 'bundle.js',

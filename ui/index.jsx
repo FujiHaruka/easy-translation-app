@@ -5,9 +5,10 @@ import App from './components/app'
 import Home from './components/home'
 import Login from './components/login'
 import Dashboard from './components/dashboard'
+import store from './store'
 
 function requireAuth (nextState, replace) {
-  let { loggedIn } = store.getState()
+  let { loggedIn } = store.getState().user
   if (!loggedIn) {
     replace('/login')
   }

@@ -11,7 +11,11 @@ let server = Hub({
   static: [ join(__dirname, '../public') ],
   endpoints,
   localActors: {
-    'actor': Actor(actorModule)
+    'actor': Actor({
+      modules: {
+        api: actorModule
+      }
+    })
   },
   storage: {
     redis: {
