@@ -104,6 +104,7 @@ const Sentence = Model('sentence', {
 module.exports = {
   User,
   Token,
+  Sentence,
   Setting,
   Doc
 }
