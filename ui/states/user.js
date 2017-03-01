@@ -20,9 +20,13 @@ Effect('requestToken', ({ userKey, password }) => co(function * () {
   }
   let { token, err } = yield api.requestToken({ userKey, password })
   if (err) {
-    throw err
+    return {
+      ok: false,
+      err
+    }
   }
   user.setUser({ loggedIn: true, userKey, token })
+  return { ok: true }
 }))
 
 export default user

@@ -16,10 +16,10 @@ function requireAuth (nextState, replace) {
 
 const Index = (
   <Router history={browserHistory}>
-    <Route component={App}>
-      <Route path='/' component={Home} />
+    <Route component={App} className='root'>
+      <Route path='/' component={Home} onEnter={requireAuth} />
       <Route path='/login' component={Login} />
-      <Route path='/dashboard' component={Dashboard} />
+      <Route path='/dashboard' component={Dashboard} onEnter={requireAuth} />
     </Route>
   </Router>
 )
