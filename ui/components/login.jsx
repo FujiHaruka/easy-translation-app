@@ -24,36 +24,39 @@ class Login extends React.Component {
     return (
       <div styleName='wrap'>
         <Card styleName={c('card', shaking ? 'shake' : '')}>
-          <CardHeader
-            title='Sign in'
-            titleStyle={{ fontSize: '1.5em' }}
+          <form onSubmit={s.submit.bind(s)}>
+            <CardHeader
+              title='Sign in'
+              titleStyle={{ fontSize: '1.5em' }}
           />
-          <TextField
-            hintText='User name'
-            id='eta-login-user'
+            <TextField
+              hintText='User name'
+              id='eta-login-user'
           /><br />
-          <TextField
-            hintText='Password'
-            type='password'
-            id='eta-login-password'
+            <TextField
+              hintText='Password'
+              type='password'
+              id='eta-login-password'
           />
-          {
+            {
             err ? <CardText style={{ color: 'red' }}>{ err.message }</CardText> : ''
           }
-          <div styleName='submit'>
-            <FlatButton
-              label='Sign in'
-              primary
-              onClick={s.submit.bind(s)}
+            <div styleName='submit'>
+              <FlatButton
+                label='Sign in'
+                primary
+                type='submit'
             />
-          </div>
+            </div>
+          </form>
         </Card>
       </div>
     )
   }
 
-  submit () {
+  submit (e) {
     const s = this
+    e.preventDefault()
     let userKey = document.getElementById('eta-login-user').value
     let password = document.getElementById('eta-login-password').value
     return co(function * () {
