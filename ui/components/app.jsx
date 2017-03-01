@@ -8,14 +8,6 @@ import { getState, Actions } from 'jumpstate'
 injectTapEventPlugin()
 
 export default class App extends React.Component {
-  constructor () {
-    super()
-    Actions.connectCaller()
-    setTimeout(() => {
-      Actions.requestToken({userKey: 'demo', password: 'demo'})
-    }, 1000)
-  }
-
   render () {
     const s = this
     let { loggedIn } = getState().user
@@ -36,6 +28,7 @@ export default class App extends React.Component {
   signButton (loggedIn) {
     return (
       <FlatButton
+        onClick={() => { Actions.logOutUser() }}
         >
         <Link
           to='/login'
