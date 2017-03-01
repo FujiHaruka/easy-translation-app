@@ -33,4 +33,6 @@ document.addEventListener('DOMContentLoaded', co(function * () {
     Index,
     document.getElementById('site')
   )
+}).catch(e => {
+  window.alert(e.message)
 }))

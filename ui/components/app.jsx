@@ -5,6 +5,8 @@ import FlatButton from 'material-ui/FlatButton'
 import { Link } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import { getState, Actions } from 'jumpstate'
+import store from '../store'
+import { Provider } from 'react-redux'
 injectTapEventPlugin()
 
 export default class App extends React.Component {
@@ -12,16 +14,18 @@ export default class App extends React.Component {
     const s = this
     let { loggedIn } = getState().user
     return (
-      <MuiThemeProvider>
-        <div>
-          <AppBar
-            title='Easy Translation'
-            showMenuIconButton={false}
-            iconElementRight={s.signButton(loggedIn)}
-            />
-          { s.props.children}
-        </div>
-      </MuiThemeProvider>
+      <Provider store={store}>
+        <MuiThemeProvider>
+          <div>
+            <AppBar
+              title='Easy Translation'
+              showMenuIconButton={false}
+              iconElementRight={s.signButton(loggedIn)}
+      />
+            { s.props.children}
+          </div>
+        </MuiThemeProvider>
+      </Provider>
     )
   }
 

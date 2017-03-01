@@ -27,7 +27,7 @@ class Login extends React.Component {
           <form onSubmit={s.submit.bind(s)}>
             <CardHeader
               title='Sign in'
-              titleStyle={{ fontSize: '1.5em' }}
+              titleStyle={{ fontSize: '1.3em', color: '#666' }}
           />
             <TextField
               hintText='User name'
