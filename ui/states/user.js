@@ -10,19 +10,6 @@ const user = State({
 
   setUser (state, user) {
     return user
-  },
-
-  logOutUser () {
-    if (window.localStorage) {
-      let storage = window.localStorage
-      storage.removeItem('userKey')
-      storage.removeItem('token')
-    }
-    return {
-      loggedIn: false,
-      userKey: '',
-      token: ''
-    }
   }
 })
 
@@ -66,6 +53,31 @@ Effect('attemptUserFromStorage', () => co(function * () {
   }
   user.setUser({ loggedIn: true, userKey, token })
   return { ok: true }
+}))
+
+Effect('logOutUser', () => co(function * () {
+  if (window.localStorage) {
+    let storage = window.localStorage
+    storage.removeItem('userKey')
+    storage.removeItem('token')
+  }
+  let { userKey, token } = getState().user
+  if (userKey && token) {
+    try {
+      let { api } = getState().caller
+      let { err } = yield api.deleteToken({ userKey, token })
+      if (err) {
+        console.error(err)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  return {
+    loggedIn: false,
+    userKey: '',
+    token: ''
+  }
 }))
 
 export default user

@@ -18,7 +18,7 @@ module.exports = {
   deleteToken: async ({ userKey, token }) => {
     let data = await Token.findOne({ token }).exec()
     let invalid = !data || userKey !== data.userKey
-    if (!invalid) {
+    if (invalid) {
       return ERR('Invalid token')
     }
     await Token.remove({ token })
