@@ -2,6 +2,7 @@ const uuid = require('uuid')
 const assert = require('assert')
 const parseDocText = require('../helpers/parse_doc_text')
 const { OK, ERR } = require('../constants')
+const toObj = require('../helpers/to_obj')
 const {
   Doc,
   Sentence
@@ -60,9 +61,9 @@ module.exports = {
 
   getDocs: async ({ userKey }) => {
     let docs = await Doc.find({ userKey }).exec()
-    // FIXME sugos のバグ？ Date 型が渡せない
+    docs = docs.map(doc => toObj(doc))
     return {
-      docs: JSON.stringify(docs)
+      docs
     }
   },
 
@@ -71,9 +72,10 @@ module.exports = {
     if (!doc || doc.userKey !== userKey) {
       return ERR('Not Found')
     }
+    doc = toObj(doc)
     return {
       ok: true,
-      doc: JSON.stringify(doc)
+      doc
     }
   }
 }

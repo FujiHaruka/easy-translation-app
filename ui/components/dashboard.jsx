@@ -37,6 +37,7 @@ class Dashboard extends React.Component {
           docs.map(
             doc =>
               <DocListItem
+                key={doc.id}
                 name={doc.filename}
                 updateAt={new Date(doc.updateAt)}
                 id={'doc-' + doc.filename} />
@@ -58,7 +59,6 @@ class Dashboard extends React.Component {
     let { userKey, token } = s.props.user
     return co(function * () {
       let { docs } = yield api.getDocs({ userKey, token })
-      docs = JSON.parse(docs)
       Actions.setDocs({
         docs,
         sort: 'recent'
