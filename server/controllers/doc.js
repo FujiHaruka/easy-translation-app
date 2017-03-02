@@ -56,5 +56,24 @@ module.exports = {
     }
     await Doc.findOneAndUpdate({ id }, { filename }).exec()
     return OK
+  },
+
+  getDocs: async ({ userKey }) => {
+    let docs = await Doc.find({ userKey }).exec()
+    // FIXME sugos のバグ？ Date 型が渡せない
+    return {
+      docs: JSON.stringify(docs)
+    }
+  },
+
+  getDocById: async ({ userKey, id }) => {
+    let doc = await Doc.findOne({ id }).exec()
+    if (!doc || doc.userKey !== userKey) {
+      return ERR('Not Found')
+    }
+    return {
+      ok: true,
+      doc: JSON.stringify(doc)
+    }
   }
 }

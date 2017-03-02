@@ -1,9 +1,11 @@
 import caller from './caller'
 import user from './user'
+import doc from './doc'
 
 const reducers = {
   caller,
-  user
+  user,
+  doc
 }
 
 export default reducers

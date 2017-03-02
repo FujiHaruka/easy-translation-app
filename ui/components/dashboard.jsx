@@ -7,6 +7,8 @@ import DocListItem from './dashboard/doc_list_item'
 import FontIcon from 'material-ui/FontIcon'
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
 import { browserHistory } from 'react-router'
+import { Actions } from 'jumpstate'
+import co from 'co'
 
 class Dashboard extends React.Component {
   render () {
@@ -20,15 +22,27 @@ class Dashboard extends React.Component {
               <FontIcon className='fa fa-plus' onClick={s.changePath('/dashboard/new')} />
             </ToolbarGroup>
           </Toolbar>
-          <List>
-            <DocListItem
-              name='hoge'
-              updateAt={new Date()}
-              id='ji'
-            />
-          </List>
+          { s.renderDocList() }
         </div>
       </div>
+    )
+  }
+
+  renderDocList () {
+    const s = this
+    let { docs } = s.props.doc
+    return (
+      <List>
+        {
+          docs.map(
+            doc =>
+              <DocListItem
+                name={doc.filename}
+                updateAt={new Date(doc.updateAt)}
+                id={'doc-' + doc.filename} />
+          )
+        }
+      </List>
     )
   }
 
@@ -36,6 +50,20 @@ class Dashboard extends React.Component {
     return () => {
       browserHistory.push(path)
     }
+  }
+
+  componentDidMount () {
+    const s = this
+    let { api } = s.props.caller
+    let { userKey, token } = s.props.user
+    return co(function * () {
+      let { docs } = yield api.getDocs({ userKey, token })
+      docs = JSON.parse(docs)
+      Actions.setDocs({
+        docs,
+        sort: 'recent'
+      })
+    })
   }
 }
 
