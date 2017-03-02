@@ -4,8 +4,13 @@ import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
+import Paper from 'material-ui/Paper'
 import { grey400 } from 'material-ui/styles/colors'
 import moment from 'moment'
+
+const paperStyle = {
+  margin: '1em'
+}
 
 class DocListItem extends React.Component {
   render () {
@@ -18,12 +23,14 @@ class DocListItem extends React.Component {
     let update = moment(updateAt).format('YYYY-MM-DD hh:mm')
     let secondaryText = `Last update: ${update}`
     return (
-      <ListItem
-        rightIconButton={s.menu()}
-        primaryText={name}
-        secondaryText={secondaryText}
-        secondaryTextLines={1}
+      <Paper zDepth={1} style={paperStyle}>
+        <ListItem
+          rightIconButton={s.menu()}
+          primaryText={name}
+          secondaryText={secondaryText}
+          secondaryTextLines={1}
       />
+      </Paper>
     )
   }
 

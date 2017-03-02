@@ -1,0 +1,21 @@
+.wrap {
+  width: 100%;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.main {
+  width: 100%;
+  max-width: 700px;
+  color: #666;
+}
+
+.textarea {
+  width: 100%;
+  padding: 1em;
+  margin: 1em 0;
+  font-family: inherit;
+  color: #666;
+  border-color: #bbb;
+}

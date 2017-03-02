@@ -6,6 +6,7 @@ import { List } from 'material-ui/List'
 import DocListItem from './dashboard/doc_list_item'
 import FontIcon from 'material-ui/FontIcon'
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
+import { browserHistory } from 'react-router'
 
 class Dashboard extends React.Component {
   render () {
@@ -16,7 +17,7 @@ class Dashboard extends React.Component {
           <Toolbar style={{ background: 'white' }}>
             <ToolbarGroup>
               <ToolbarTitle text='Documents' />
-              <FontIcon className='fa fa-plus' />
+              <FontIcon className='fa fa-plus' onClick={s.changePath('/dashboard/new')} />
             </ToolbarGroup>
           </Toolbar>
           <List>
@@ -29,6 +30,12 @@ class Dashboard extends React.Component {
         </div>
       </div>
     )
+  }
+
+  changePath (path) {
+    return () => {
+      browserHistory.push(path)
+    }
   }
 }
 
