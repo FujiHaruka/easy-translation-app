@@ -4,11 +4,18 @@ import styles from '../css/new_doc.css'
 import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/FlatButton'
-import { Actions } from 'jumpstate'
+import { browserHistory } from 'react-router'
 
 class NewDoc extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      errs: []
+    }
+  }
   render () {
     const s = this
+    let errs = s.state.errs.reduce((obj, err) => Object.assign(obj, { [err[0]]: err[1] }), {})
     return (
       <div styleName='wrap'>
         <div styleName='main'>
@@ -17,23 +24,32 @@ class NewDoc extends React.Component {
             <TextField
               id='newdoc-name'
               hintText='document name'
-              errorText='This field is required'
+              errorText={errs.emptyName}
+              style={{ color: '#666' }}
           />
           </div>
           <div>
             <textarea
               id='newdoc-text'
               styleName='textarea'
-              rows={50}
+              rows={30}
               placeholder='Write text.'
             />
           </div>
+          <div styleName='err'>
+            {errs.emptyText}
+          </div>
           <div>
-            <FlatButton
-              label='Primary'
-              primary
-              onClick={s.submit}
+            <div styleName='err'>
+              {errs.createFailed}
+            </div>
+            <div styleName='submit-wrap'>
+              <FlatButton
+                label='Primary'
+                primary
+                onClick={s.submit.bind(s)}
             />
+            </div>
           </div>
         </div>
       </div>
@@ -44,16 +60,31 @@ class NewDoc extends React.Component {
     const s = this
     let filename = document.getElementById('newdoc-name').value
     let text = document.getElementById('newdoc-text').value
+    let errs = []
     if (!filename) {
-      window.alert('Name field is required.')
-      return
+      errs.push(['emptyName', 'Name field is required.'])
     }
     if (!text) {
-      window.alert('Text field is required.')
+      errs.push(['emptyText', 'Text field is required'])
+    }
+    if (errs.length > 0) {
+      window.alert(errs[0][1])
+      s.setState({ errs })
       return
     }
-    // TODO 実装
-    Actions.createDoc({ text, filename })
+    let { api } = s.props.caller
+    let { userKey, token } = s.props.user
+    api.createDoc({ text, filename, userKey, token })
+      .then(() => {
+        // TODO /doc/:name/edit に行くべき
+        browserHistory.push('/dashboard')
+      })
+      .catch(e => {
+        let errs = [['createFailed', e.message]]
+        s.setState({
+          errs
+        })
+      })
   }
 }
 
