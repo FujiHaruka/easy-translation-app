@@ -3,6 +3,7 @@ import co from 'co'
 import { Actions } from 'jumpstate'
 import FlatButton from 'material-ui/FlatButton'
 import { pathTo } from '../../helpers/util'
+import url from '../../helpers/url'
 
 /**
  * Edit erea for 'list' view mode
@@ -24,7 +25,7 @@ class EditAreaList extends React.Component {
               <div>
                 <FlatButton
                   label='Edit'
-                  onClick={pathTo(`/dashboard/docs/${did}?view=one&s_id=${id}`)}
+                  onClick={pathTo(url.editPageOneMode(did, id))}
                 />
               </div>
               <div>

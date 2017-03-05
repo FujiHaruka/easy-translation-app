@@ -9,6 +9,10 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import EditAreaList from './edit/edit_area_list'
 import EditAreaOne from './edit/edit_area_one'
 import _ from 'lodash'
+import FontIcon from 'material-ui/FontIcon'
+import IconButton from 'material-ui/IconButton'
+import FlatButton from 'material-ui/FlatButton'
+import url from '../helpers/url'
 
 const redirectToDashboard = pathTo('/dashboard')
 
@@ -38,18 +42,15 @@ class Edit extends React.Component {
       <div styleName='wrap'>
         <div styleName='main'>
           <section styleName='header'>
+            <div>
+              <IconButton
+                iconClassName='fa fa-chevron-left'
+                tooltip='Dashboard'
+                onClick={s.moveToDashbord}
+                />
+            </div>
             <h2>{ targetDoc.filename }</h2>
           </section>
-
-          {/* <section styleName='tabs-wrap'>
-            <div styleName='tabs'>
-              <Tabs value={mode}>
-                <Tab label='All mode' value='all' />
-                <Tab label='One mode' value='one' />
-              </Tabs>
-            </div>
-          </section> */}
-
           <section styleName='edit-area'>
             { s.renderEditArea() }
           </section>
@@ -77,15 +78,36 @@ class Edit extends React.Component {
     let did = targetDoc.id
     switch (viewMode) {
       case 'list':
-        return <EditAreaList sentences={sentenceMap.toArray()} styles={styles} did={did} />
+        return <EditAreaList
+          sentences={sentenceMap.toArray()}
+          styles={styles}
+          did={did}
+          />
       case 'one':
-        let sentence = sentenceMap.get(targetSentenceId)
-        return <EditAreaOne sentence={sentence} styles={styles} did={did} />
+        {
+          let sentence = sentenceMap.get(targetSentenceId)
+          let ids = sentenceMap.keySeq().toArray()
+          let idIndex = ids.indexOf(sentence.id)
+          let prevId = ids[idIndex - 1] || ''
+          let nextId = ids[idIndex + 1] || ''
+          return <EditAreaOne
+            sentence={sentence}
+            styles={styles}
+            did={did}
+            prevId={prevId}
+            nextId={nextId}
+            />
+        }
     }
   }
 
   editAreaOneMode () {
     return null
+  }
+
+  moveToDashbord () {
+    Actions.editting.reset()
+    pathTo(url.dashboardPage())()
   }
 }
 

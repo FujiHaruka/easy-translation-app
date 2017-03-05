@@ -16,6 +16,15 @@ const editting = State('editting', {
     viewMode: 'list'
   },
 
+  reset () {
+    return {
+      targetDoc: {},
+      targetSentenceId: '',
+      sentenceMap: Im.OrderedMap({}),
+      viewMode: 'list'
+    }
+  },
+
   setTargetDoc (state, targetDoc) {
     return _.assign({}, state, { targetDoc })
   },

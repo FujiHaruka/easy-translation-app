@@ -4,8 +4,8 @@ import styles from '../css/dashboard.css'
 import { connect } from 'react-redux'
 import { List } from 'material-ui/List'
 import DocListItem from './dashboard/doc_list_item'
-import FontIcon from 'material-ui/FontIcon'
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
+import IconButton from 'material-ui/IconButton'
 import { Actions } from 'jumpstate'
 import co from 'co'
 import { pathTo } from '../helpers/util'
@@ -19,7 +19,11 @@ class Dashboard extends React.Component {
           <Toolbar style={{ background: 'white' }}>
             <ToolbarGroup>
               <ToolbarTitle text='Documents' />
-              <FontIcon className='fa fa-plus' onClick={pathTo('/dashboard/docs/new')} />
+              <IconButton
+                tooltip='New Document'
+                iconClassName='fa fa-plus'
+                onClick={pathTo('/dashboard/docs/new')}
+              />
             </ToolbarGroup>
           </Toolbar>
           { s.renderDocList() }
