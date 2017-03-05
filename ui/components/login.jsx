@@ -60,7 +60,7 @@ class Login extends React.Component {
     let userKey = document.getElementById('eta-login-user').value
     let password = document.getElementById('eta-login-password').value
     return co(function * () {
-      let { err } = yield Actions.requestToken({ userKey, password })
+      let { err } = yield Actions.login({ userKey, password })
       if (err) {
         s.setState({ err })
         s.shake()

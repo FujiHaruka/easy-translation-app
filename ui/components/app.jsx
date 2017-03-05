@@ -21,7 +21,7 @@ export default class App extends React.Component {
               title='Easy Translation'
               showMenuIconButton={false}
               iconElementRight={s.signButton(loggedIn)}
-      />
+              />
             { s.props.children}
           </div>
         </MuiThemeProvider>
@@ -32,7 +32,7 @@ export default class App extends React.Component {
   signButton (loggedIn) {
     return (
       <FlatButton
-        onClick={() => { Actions.logOutUser() }}
+        onClick={() => { Actions.logout() }}
         >
         <Link
           to='/login'

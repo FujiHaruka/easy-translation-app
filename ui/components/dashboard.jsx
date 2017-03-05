@@ -6,9 +6,10 @@ import { List } from 'material-ui/List'
 import DocListItem from './dashboard/doc_list_item'
 import FontIcon from 'material-ui/FontIcon'
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
-import { browserHistory } from 'react-router'
+// import { browserHistory } from 'react-router'
 import { Actions } from 'jumpstate'
 import co from 'co'
+import { pathTo } from '../helpers/util'
 
 class Dashboard extends React.Component {
   render () {
@@ -19,7 +20,7 @@ class Dashboard extends React.Component {
           <Toolbar style={{ background: 'white' }}>
             <ToolbarGroup>
               <ToolbarTitle text='Documents' />
-              <FontIcon className='fa fa-plus' onClick={s.changePath('/dashboard/new')} />
+              <FontIcon className='fa fa-plus' onClick={pathTo('/dashboard/new')} />
             </ToolbarGroup>
           </Toolbar>
           { s.renderDocList() }
@@ -30,39 +31,27 @@ class Dashboard extends React.Component {
 
   renderDocList () {
     const s = this
-    let { docs } = s.props.doc
+    let { docMap } = s.props.doc
     return (
       <List>
         {
-          docs.map(
+          docMap.toArray().map(
             doc =>
               <DocListItem
                 key={doc.id}
                 name={doc.filename}
                 updateAt={new Date(doc.updateAt)}
-                id={'doc-' + doc.filename} />
+                did={doc.id} />
           )
         }
       </List>
     )
   }
 
-  changePath (path) {
-    return () => {
-      browserHistory.push(path)
-    }
-  }
-
   componentDidMount () {
     const s = this
-    let { api } = s.props.caller
-    let { userKey, token } = s.props.user
     return co(function * () {
-      let { docs } = yield api.getDocs({ userKey, token })
-      Actions.setDocs({
-        docs,
-        sort: 'recent'
-      })
+      yield Actions.fetchDocs()
     })
   }
 }

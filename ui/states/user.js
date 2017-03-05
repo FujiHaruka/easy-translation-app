@@ -1,19 +1,19 @@
 import { State, Effect, Actions, getState } from 'jumpstate'
 import co from 'co'
 
-const user = State({
+const user = State('user', {
   initial: {
     loggedIn: false,
     userKey: '',
     token: ''
   },
 
-  setUser (state, user) {
+  set (state, user) {
     return user
   }
 })
 
-Effect('requestToken', ({ userKey, password }) => co(function * () {
+Effect('login', ({ userKey, password }) => co(function * () {
   let { api } = getState().caller
   let { token, err } = yield api.requestToken({ userKey, password })
   if (err) {
@@ -22,7 +22,7 @@ Effect('requestToken', ({ userKey, password }) => co(function * () {
       err
     }
   }
-  user.setUser({ loggedIn: true, userKey, token })
+  user.set({ loggedIn: true, userKey, token })
   if (window.localStorage) {
     let storage = window.localStorage
     storage.setItem('userKey', userKey)
@@ -34,7 +34,7 @@ Effect('requestToken', ({ userKey, password }) => co(function * () {
 /**
  * Set user info if saved in localStorage.
  */
-Effect('attemptUserFromStorage', () => co(function * () {
+Effect('attemptLoginFromStorage', () => co(function * () {
   if (!window.localStorage) {
     return { ok: false }
   }
@@ -51,33 +51,36 @@ Effect('attemptUserFromStorage', () => co(function * () {
     storage.removeItem('token')
     return { ok: false }
   }
-  user.setUser({ loggedIn: true, userKey, token })
+  user.set({ loggedIn: true, userKey, token })
   return { ok: true }
 }))
 
-Effect('logOutUser', () => co(function * () {
+Effect('logout', () => co(function * () {
   if (window.localStorage) {
     let storage = window.localStorage
     storage.removeItem('userKey')
     storage.removeItem('token')
   }
-  let { userKey, token } = getState().user
-  if (userKey && token) {
-    try {
-      let { api } = getState().caller
-      let { err } = yield api.deleteToken({ userKey, token })
-      if (err) {
-        console.error(err)
-      }
-    } catch (e) {
-      console.error(e)
-    }
-  }
-  return {
+
+  user.set({
     loggedIn: false,
     userKey: '',
     token: ''
+  })
+
+  let { userKey, token } = getState().user
+  if (!userKey || !token) {
+    return
   }
+  let { api } = getState().caller
+  if (!api) {
+    throw new Error('Not connect API caller')
+  }
+  let { err } = yield api.deleteToken({ userKey, token })
+  if (err) {
+    throw err
+  }
+  return { ok: true }
 }))
 
 export default user

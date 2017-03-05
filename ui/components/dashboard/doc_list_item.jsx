@@ -7,6 +7,8 @@ import MenuItem from 'material-ui/MenuItem'
 import Paper from 'material-ui/Paper'
 import { grey400 } from 'material-ui/styles/colors'
 import moment from 'moment'
+import { browserHistory } from 'react-router'
+import { pathTo } from '../../helpers/util'
 
 const paperStyle = {
   margin: '1em'
@@ -17,7 +19,7 @@ class DocListItem extends React.Component {
     const s = this
     let {
       name,
-      id,
+      did,
       updateAt
     } = s.props
     let update = moment(updateAt).format('YYYY-MM-DD hh:mm')
@@ -29,6 +31,7 @@ class DocListItem extends React.Component {
           primaryText={name}
           secondaryText={secondaryText}
           secondaryTextLines={1}
+          onClick={pathTo(`/dashboard/${did}/edit`)}
       />
       </Paper>
     )

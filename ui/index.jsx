@@ -6,6 +6,7 @@ import Home from './components/home'
 import Login from './components/login'
 import Dashboard from './components/dashboard'
 import NewDoc from './components/new_doc'
+import Edit from './components/edit'
 import store from './store'
 import { Actions } from 'jumpstate'
 import co from 'co'
@@ -24,13 +25,14 @@ const Index = (
       <Route path='/login' component={Login} />
       <Route path='/dashboard' component={Dashboard} onEnter={requireAuth} />
       <Route path='/dashboard/new' component={NewDoc} onEnter={requireAuth} />
+      <Route path='/dashboard/:did/edit' component={Edit} onEnter={requireAuth} />
     </Route>
   </Router>
 )
 
 document.addEventListener('DOMContentLoaded', co(function * () {
-  yield Actions.connectCaller() // ここでいいかどうか迷う
-  yield Actions.attemptUserFromStorage()
+  yield Actions.connectCaller()
+  yield Actions.attemptLoginFromStorage()
   render(
     Index,
     document.getElementById('site')
