@@ -2,6 +2,7 @@ import React, { PropTypes as types } from 'react'
 import co from 'co'
 import { Actions, getState } from 'jumpstate'
 import FlatButton from 'material-ui/FlatButton'
+import { pathTo } from '../../helpers/util'
 
 /**
  * Edit area for 'one' mode
@@ -9,11 +10,15 @@ import FlatButton from 'material-ui/FlatButton'
 class EditAreaOne extends React.Component {
   render () {
     const s = this
-    let { sentence, styles } = s.props
+    let { sentence, styles, did } = s.props
     let { id, original, translated } = sentence
     return (
       <div>
         <div>
+          <FlatButton
+            label='Back to list'
+            onClick={pathTo(`/dashboard/docs/${did}?view=list`)}
+          />
           <FlatButton
             label='Save'
             onClick={s.save.bind(s)}
@@ -53,7 +58,8 @@ EditAreaOne.propTypes = {
   sentence: types.object,
   nextId: types.string,
   prevId: types.string,
-  styles: types.object
+  styles: types.object,
+  did: types.string
 }
 
 export default EditAreaOne

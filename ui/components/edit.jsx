@@ -8,10 +8,29 @@ import { pathTo } from '../helpers/util'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import EditAreaList from './edit/edit_area_list'
 import EditAreaOne from './edit/edit_area_one'
+import _ from 'lodash'
 
 const redirectToDashboard = pathTo('/dashboard')
 
 class Edit extends React.Component {
+  componentWillReceiveProps (props) {
+    let { query } = props.location
+    if (!_.isEqual(this.props.location.query, query)) {
+      this.viewModeFrom(query)
+    }
+  }
+
+  viewModeFrom (query) {
+    let {
+      view = 'list',
+      s_id = ''
+    } = query
+    Actions.editting.changeViewMode({
+      viewMode: view,
+      targetSentenceId: s_id
+    })
+  }
+
   render () {
     const s = this
     let { targetDoc, viewMode } = s.props.editting
@@ -45,6 +64,7 @@ class Edit extends React.Component {
     return co(function * () {
       yield Actions.fetchDocById(id)
       yield Actions.fetchSentences(id)
+      s.viewModeFrom(s.props.location.query)
     }).catch(e => {
       console.error(e)
       redirectToDashboard()
@@ -53,14 +73,14 @@ class Edit extends React.Component {
 
   renderEditArea () {
     const s = this
-    let { viewMode, sentenceMap, targetSentenceId } = s.props.editting
+    let { viewMode, sentenceMap, targetSentenceId, targetDoc } = s.props.editting
+    let did = targetDoc.id
     switch (viewMode) {
       case 'list':
-        return <EditAreaList sentences={sentenceMap.toArray()} styles={styles} />
+        return <EditAreaList sentences={sentenceMap.toArray()} styles={styles} did={did} />
       case 'one':
-        // let sentences = sentenceMap.get()
         let sentence = sentenceMap.get(targetSentenceId)
-        return <EditAreaOne sentence={sentence} styles={styles} />
+        return <EditAreaOne sentence={sentence} styles={styles} did={did} />
     }
   }
 

@@ -2,6 +2,7 @@ import React, { PropTypes as types } from 'react'
 import co from 'co'
 import { Actions } from 'jumpstate'
 import FlatButton from 'material-ui/FlatButton'
+import { pathTo } from '../../helpers/util'
 
 /**
  * Edit erea for 'list' view mode
@@ -9,7 +10,7 @@ import FlatButton from 'material-ui/FlatButton'
 class EditAreaList extends React.Component {
   render () {
     const s = this
-    let { sentences, styles } = s.props
+    let { sentences, styles, did } = s.props
     return (
       <div>
         <FlatButton
@@ -23,7 +24,7 @@ class EditAreaList extends React.Component {
               <div>
                 <FlatButton
                   label='Edit'
-                  onClick={() => Actions.editting.changeViewMode({ viewMode: 'one', targetSentenceId: id })}
+                  onClick={pathTo(`/dashboard/docs/${did}?view=one&s_id=${id}`)}
                 />
               </div>
               <div>
@@ -47,21 +48,23 @@ class EditAreaList extends React.Component {
   save () {
     const s = this
     return co(function * () {
-      let { sentenceMap, targetDoc } = s.props.editting
-      let ids = sentenceMap.toArray().map(s => s.id)
-      let updateList = ids.map(id => ({
+      let { sentences, did } = s.props
+      let updateList = sentences.map(({ id, translated }) => ({
         id,
-        translated: document.getElementById(`translated-${id}`).value
+        translated: document.getElementById(`translated-${id}`).value,
+        prevTranslated: translated
       })).filter(
-        ({id, translated}) => translated !== sentenceMap.get(id).translated
-      )
-      yield Actions.updateTranslations({did: targetDoc.id, updateList})
+        ({translated, prevTranslated}) => translated !== prevTranslated
+      ).map(({ id, translated }) => ({ id, translated }))
+      yield Actions.updateTranslations({did, updateList})
     })
   }
 }
 
 EditAreaList.propTypes = {
-  sentences: types.array
+  sentences: types.array,
+  did: types.string,
+  styles: types.object
 }
 
 export default EditAreaList

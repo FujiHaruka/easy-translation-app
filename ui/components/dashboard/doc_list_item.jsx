@@ -7,7 +7,6 @@ import MenuItem from 'material-ui/MenuItem'
 import Paper from 'material-ui/Paper'
 import { grey400 } from 'material-ui/styles/colors'
 import moment from 'moment'
-import { browserHistory } from 'react-router'
 import { pathTo } from '../../helpers/util'
 
 const paperStyle = {
@@ -31,7 +30,7 @@ class DocListItem extends React.Component {
           primaryText={name}
           secondaryText={secondaryText}
           secondaryTextLines={1}
-          onClick={pathTo(`/dashboard/${did}/edit`)}
+          onClick={pathTo(`/dashboard/docs/${did}`)}
       />
       </Paper>
     )

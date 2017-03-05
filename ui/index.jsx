@@ -24,8 +24,8 @@ const Index = (
       <Route path='/' component={Home} />
       <Route path='/login' component={Login} />
       <Route path='/dashboard' component={Dashboard} onEnter={requireAuth} />
-      <Route path='/dashboard/new' component={NewDoc} onEnter={requireAuth} />
-      <Route path='/dashboard/:did/edit' component={Edit} onEnter={requireAuth} />
+      <Route path='/dashboard/docs/new' component={NewDoc} onEnter={requireAuth} />
+      <Route path='/dashboard/docs/:did' component={Edit} onEnter={requireAuth} />
     </Route>
   </Router>
 )

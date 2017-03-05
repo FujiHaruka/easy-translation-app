@@ -3,6 +3,7 @@ import co from 'co'
 import _ from 'lodash'
 import * as Im from 'immutable'
 import { getApi } from '../helpers/store_util'
+import { pathTo } from '../helpers/util'
 
 const editting = State('editting', {
   initial: {
