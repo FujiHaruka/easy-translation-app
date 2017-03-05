@@ -30,7 +30,14 @@
 
 }
 
-.translated-textarea-mode-all {
+.edit-area-all-textarea {
+  width: 100%;
+  padding: 0.5em;
+  margin: 1em 0;
+  box-sizing: border-box;
+}
+
+.edit-area-one-textarea {
   width: 100%;
   padding: 0.5em;
   margin: 1em 0;

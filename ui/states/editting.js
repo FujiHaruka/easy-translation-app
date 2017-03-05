@@ -7,9 +7,12 @@ import { getApi } from '../helpers/store_util'
 const editting = State('editting', {
   initial: {
     targetDoc: {},
+    // On one view mode
+    targetSentenceId: '',
     // OrderedMap by id
     sentenceMap: Im.OrderedMap({}),
-    mode: 'all' // all or one
+    // list, one
+    viewMode: 'list'
   },
 
   setTargetDoc (state, targetDoc) {
@@ -22,8 +25,15 @@ const editting = State('editting', {
     return _.assign({}, state, { sentenceMap })
   },
 
-  changeMode (state, mode) {
-    return _.assign({}, state, { mode })
+  changeViewMode (state, options) {
+    let { viewMode } = options
+    switch (viewMode) {
+      case 'list':
+        return _.assign({}, state, { viewMode })
+      case 'one':
+        let { targetSentenceId } = options
+        return _.assign({}, state, { viewMode, targetSentenceId })
+    }
   }
 })
 

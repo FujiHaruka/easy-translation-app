@@ -6,29 +6,30 @@ import { Actions, getState } from 'jumpstate'
 import co from 'co'
 import { pathTo } from '../helpers/util'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import FlatButton from 'material-ui/FlatButton'
+import EditAreaList from './edit/edit_area_list'
+import EditAreaOne from './edit/edit_area_one'
 
 const redirectToDashboard = pathTo('/dashboard')
 
 class Edit extends React.Component {
   render () {
     const s = this
-    let { editting } = s.props
+    let { targetDoc, viewMode } = s.props.editting
     return (
       <div styleName='wrap'>
         <div styleName='main'>
           <section styleName='header'>
-            {s.renderHeader()}
+            <h2>{ targetDoc.filename }</h2>
           </section>
 
-          <section styleName='tabs-wrap'>
+          {/* <section styleName='tabs-wrap'>
             <div styleName='tabs'>
-              <Tabs value={editting.mode} onChange={Actions.changeEdittingMode}>
+              <Tabs value={mode}>
                 <Tab label='All mode' value='all' />
                 <Tab label='One mode' value='one' />
               </Tabs>
             </div>
-          </section>
+          </section> */}
 
           <section styleName='edit-area'>
             { s.renderEditArea() }
@@ -50,73 +51,21 @@ class Edit extends React.Component {
     })
   }
 
-  renderHeader () {
-    const s = this
-    let { targetDoc } = s.props.editting
-    return (
-      <h2>{ targetDoc.filename }</h2>
-    )
-  }
-
   renderEditArea () {
     const s = this
-    let { mode } = s.props.editting
-    switch (mode) {
-      case 'all':
-        return s.editAreaAllMode()
+    let { viewMode, sentenceMap, targetSentenceId } = s.props.editting
+    switch (viewMode) {
+      case 'list':
+        return <EditAreaList sentences={sentenceMap.toArray()} styles={styles} />
       case 'one':
-        return s.editAreaOneMode()
+        // let sentences = sentenceMap.get()
+        let sentence = sentenceMap.get(targetSentenceId)
+        return <EditAreaOne sentence={sentence} styles={styles} />
     }
   }
 
   editAreaOneMode () {
     return null
-  }
-
-  editAreaAllMode () {
-    const s = this
-    let { sentenceMap } = s.props.editting
-    return (
-      <div>
-        <FlatButton
-          label='Save'
-          primary
-          onClick={s.saveAll.bind(s)}
-        />
-        {
-          sentenceMap.toArray().map(({id, original, translated}) =>
-            <div key={id}>
-              <div>
-                {original}
-              </div>
-              <div>
-                <textarea
-                  id={`translated-${id}`}
-                  styleName='translated-textarea-mode-all'
-                  defaultValue={translated}
-                  rows={3}
-                  />
-              </div>
-            </div>
-        )
-        }
-      </div>
-    )
-  }
-
-  saveAll () {
-    const s = this
-    return co(function * () {
-      let { sentenceMap, targetDoc } = s.props.editting
-      let ids = sentenceMap.toArray().map(s => s.id)
-      let updateList = ids.map(id => ({
-        id,
-        translated: document.getElementById(`translated-${id}`).value
-      })).filter(
-        ({id, translated}) => translated !== sentenceMap.get(id).translated
-      )
-      yield Actions.updateTranslations({did: targetDoc.id, updateList})
-    })
   }
 }
 
