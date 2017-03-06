@@ -55,9 +55,9 @@ class EditAreaOne extends React.Component {
   save () {
     const s = this
     return co(function * () {
+      let { did } = s.props
       let { id } = s.props.sentence
       let translated = document.getElementById(`translated-one-${id}`).value
-      let did = getState().editting.targetDoc.id
       let updateList = [{
         id,
         translated

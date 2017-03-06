@@ -16,7 +16,7 @@ import url from '../helpers/url'
 
 const redirectToDashboard = pathTo('/dashboard')
 
-class Edit extends React.Component {
+class Doc extends React.Component {
   componentWillReceiveProps (props) {
     let { query } = props.location
     if (!_.isEqual(this.props.location.query, query)) {
@@ -29,7 +29,7 @@ class Edit extends React.Component {
       view = 'list',
       s_id = ''
     } = query
-    Actions.editting.changeViewMode({
+    Actions.doc.changeViewMode({
       viewMode: view,
       targetSentenceId: s_id
     })
@@ -37,7 +37,7 @@ class Edit extends React.Component {
 
   render () {
     const s = this
-    let { targetDoc, viewMode } = s.props.editting
+    let { targetDoc, viewMode } = s.props.doc
     return (
       <div styleName='wrap'>
         <div styleName='main'>
@@ -74,7 +74,7 @@ class Edit extends React.Component {
 
   renderEditArea () {
     const s = this
-    let { viewMode, sentenceMap, targetSentenceId, targetDoc } = s.props.editting
+    let { viewMode, sentenceMap, targetSentenceId, targetDoc } = s.props.doc
     let did = targetDoc.id
     switch (viewMode) {
       case 'list':
@@ -106,7 +106,7 @@ class Edit extends React.Component {
   }
 
   moveToDashbord () {
-    Actions.editting.reset()
+    Actions.doc.resetTargetDoc()
     pathTo(url.dashboardPage())()
   }
 }
@@ -115,7 +115,7 @@ export default connect(
   state => state
 )(
   CSSModules(
-    Edit,
+    Doc,
     styles,
     { allowMultiple: true }
   )
