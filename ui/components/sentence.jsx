@@ -21,6 +21,11 @@ const moveToSentence = (did, sid) => () => {
  * Edit area for 'one' mode
  */
 class Sentence extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { saveTimer: null }
+  }
+
   render () {
     const s = this
     let { sentenceMap, targetSentenceId, targetDoc } = s.props.doc
@@ -47,10 +52,6 @@ class Sentence extends React.Component {
           <Toolbar style={{ background: 'white', marginBottom: '1.5em' }}>
             <ToolbarGroup>
               <ToolbarTitle text={targetDoc.filename} />
-              <FlatButton
-                label='Save'
-                onClick={s.save.bind(s)}
-                />
             </ToolbarGroup>
           </Toolbar>
           <div>
@@ -105,9 +106,13 @@ class Sentence extends React.Component {
   componentDidMount () {
     const s = this
     s.updatePage(s.props)
+    let saveTimer = setInterval(s.save, 1000)
+    s.setState({ saveTimer })
   }
 
   componentWillUnmount () {
+    const s = this
+    clearInterval(s.state.saveTimer)
     Actions.doc.setTargetSentence('')
   }
 
@@ -131,12 +136,14 @@ class Sentence extends React.Component {
   }
 
   save () {
-    const s = this
     return co(function * () {
-      let { targetDoc, sentenceMap, targetSentenceId } = s.props.doc
+      let { targetDoc, sentenceMap, targetSentenceId } = getState().doc
       let sentence = sentenceMap.get(targetSentenceId)
       let { id } = sentence
       let translated = document.getElementById(TEXTAREA_ID).value
+      if (translated === sentence.translated) {
+        return
+      }
       let updateList = [{
         id,
         translated
