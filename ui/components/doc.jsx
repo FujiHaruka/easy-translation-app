@@ -51,9 +51,9 @@ class Doc extends React.Component {
         <div styleName='main'>
           <section styleName='header'>
             <div>
-              <IconButton
-                iconClassName='fa fa-chevron-left'
-                tooltip='Dashboard'
+              <FlatButton
+                label='Dashboard'
+                icon={<i className='fa fa-chevron-left' />}
                 onClick={s.moveToDashbord}
                 />
             </div>

@@ -17,3 +17,21 @@
   margin: 1em 0;
   box-sizing: border-box;
 }
+
+.navi-buttons {
+  margin-top: 1.5em;
+  position: relative;
+  width: 100%;
+}
+
+.right-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.left-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

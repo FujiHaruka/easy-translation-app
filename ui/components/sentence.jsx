@@ -5,8 +5,17 @@ import { Actions, getState } from 'jumpstate'
 import styles from '../css/sentence.css'
 import CSSModules from 'react-css-modules'
 import FlatButton from 'material-ui/FlatButton'
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
 import { pathTo } from '../helpers/util'
 import url from '../helpers/url'
+
+const TEXTAREA_ID = 'setnence-translate-textarea'
+
+const moveToSentence = (did, sid) => () => {
+  Actions.doc.setTargetSentence('')
+  document.getElementById(TEXTAREA_ID).value = ''
+  pathTo(url.sentencePage(did, sid))()
+}
 
 /**
  * Edit area for 'one' mode
@@ -23,37 +32,60 @@ class Sentence extends React.Component {
     let idIndex = ids.indexOf(sentence.id)
     let prevId = ids[idIndex - 1] || ''
     let nextId = ids[idIndex + 1] || ''
-    let { id, original, translated } = sentence
+    let { original, translated } = sentence
 
     return (
       <div styleName='wrap'>
         <div styleName='main'>
           <div>
             <FlatButton
-              label='Back to list'
+              label='Document'
+              icon={<i className='fa fa-chevron-left' />}
               onClick={pathTo(url.docPageOnListView(targetDoc.id))}
-          />
-            <FlatButton
-              label='Save'
-              onClick={s.save.bind(s)}
-          />
-            {
-            nextId && <FlatButton label='Next' onClick={pathTo(url.sentencePage(targetDoc.id, nextId))} />
-          }
-            {
-            prevId && <FlatButton label='Prev' onClick={pathTo(url.sentencePage(targetDoc.id, prevId))} />
-          }
+            />
           </div>
+          <Toolbar style={{ background: 'white', marginBottom: '1.5em' }}>
+            <ToolbarGroup>
+              <ToolbarTitle text={targetDoc.filename} />
+              <FlatButton
+                label='Save'
+                onClick={s.save.bind(s)}
+                />
+            </ToolbarGroup>
+          </Toolbar>
           <div>
             {original}
           </div>
           <div>
             <textarea
-              id={`translated-one-${id}`}
+              id={TEXTAREA_ID}
               styleName='textarea'
               defaultValue={translated}
               rows={3}
           />
+          </div>
+          <div styleName='navi-buttons'>
+            {
+              prevId &&
+              <div styleName='left-button'>
+                <FlatButton
+                  label='Prev'
+                  icon={<i className='fa fa-chevron-left' />}
+                  onClick={moveToSentence(targetDoc.id, prevId)}
+                />
+              </div>
+            }
+            {
+              nextId &&
+              <div styleName='right-button'>
+                <FlatButton
+                  label='Next'
+                  labelPosition='before'
+                  icon={<i className='fa fa-chevron-right' />}
+                  onClick={moveToSentence(targetDoc.id, nextId)}
+                  />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -61,23 +93,37 @@ class Sentence extends React.Component {
   }
 
   componentWillReceiveProps (props) {
-    // 筋悪
-    let textareaId = `translated-one-${props.params.sid}`
-    let textarea = document.getElementById(textareaId)
-    let { sentenceMap, targetSentenceId } = props.doc
-    let sentence = sentenceMap.get(targetSentenceId)
-    if (textarea && sentence) {
-      textarea.value = sentence.translated
+    const s = this
+    let { did, sid } = s.props.params
+    let { did: nextDid, sid: nextSid } = props.params
+    if (did === nextDid && sid === nextSid) {
+      return
     }
+    s.updatePage(props)
   }
 
   componentDidMount () {
     const s = this
-    let { did, sid } = s.props.params
+    s.updatePage(s.props)
+  }
+
+  componentWillUnmount () {
+    Actions.doc.setTargetSentence('')
+  }
+
+  updatePage (props) {
+    let { did, sid } = props.params
     return co(function * () {
       Actions.doc.setTargetSentence(sid)
       yield Actions.fetchDocById(did)
       yield Actions.fetchSentences(did)
+      // Clear textarea 筋悪
+      let textarea = document.getElementById(TEXTAREA_ID)
+      let { sentenceMap, targetSentenceId } = getState().doc
+      let sentence = sentenceMap.get(targetSentenceId)
+      if (textarea && sentence) {
+        textarea.value = sentence.translated
+      }
     }).catch(e => {
       console.error(e)
       pathTo(url.dashboardPage())()
@@ -90,7 +136,7 @@ class Sentence extends React.Component {
       let { targetDoc, sentenceMap, targetSentenceId } = s.props.doc
       let sentence = sentenceMap.get(targetSentenceId)
       let { id } = sentence
-      let translated = document.getElementById(`translated-one-${id}`).value
+      let translated = document.getElementById(TEXTAREA_ID).value
       let updateList = [{
         id,
         translated
