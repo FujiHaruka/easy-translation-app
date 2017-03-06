@@ -8,10 +8,10 @@ const url = {
    * @param {string} did - document id
    * @param {string} sid - sentence id
    */
-  docPageOnEdit (did, sid) {
+  sentencePage (did, sid) {
     assert.ok(did)
     assert.ok(sid)
-    return `/dashboard/docs/${did}?mode=edit&sid=${sid}`
+    return `/dashboard/docs/${did}/${sid}`
   },
   docPageOnListView (did) {
     assert.ok(did)

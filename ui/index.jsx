@@ -7,6 +7,7 @@ import Login from './components/login'
 import Dashboard from './components/dashboard'
 import NewDoc from './components/new_doc'
 import Doc from './components/doc'
+import Sentence from './components/sentence'
 import store from './store'
 import { Actions } from 'jumpstate'
 import co from 'co'
@@ -26,6 +27,7 @@ const Index = (
       <Route path='/dashboard' component={Dashboard} onEnter={requireAuth} />
       <Route path='/dashboard/docs/new' component={NewDoc} onEnter={requireAuth} />
       <Route path='/dashboard/docs/:did' component={Doc} onEnter={requireAuth} />
+      <Route path='/dashboard/docs/:did/:sid' component={Sentence} onEnter={requireAuth} />
     </Route>
   </Router>
 )

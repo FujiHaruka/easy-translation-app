@@ -43,3 +43,13 @@
   margin: 1em 0;
   box-sizing: border-box;
 }
+
+.list-view-original {
+  padding: 0.5em 0;
+  color: #999;
+}
+
+.list-view-translated {
+  padding: 0.5em 0;
+  color: #666;
+}

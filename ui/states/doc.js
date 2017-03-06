@@ -10,7 +10,7 @@ const doc = State('doc', {
     docMap: Im.OrderedMap({}),
     // View this doc
     targetDoc: {},
-    // On one view mode
+    // On Sentence page
     targetSentenceId: '',
     // OrderedMap by id
     sentenceMap: Im.OrderedMap({}),
@@ -29,6 +29,10 @@ const doc = State('doc', {
     return _.assign({}, state, { targetDoc })
   },
 
+  setTargetSentence (state, targetSentenceId) {
+    return _.assign({}, state, { targetSentenceId })
+  },
+
   setSentences (state, sentences) {
     let sentenceMap = Im.OrderedMap(_.keyBy(sentences, 'id'))
     sentenceMap = sentenceMap.sortBy(s => s.order)
@@ -42,9 +46,6 @@ const doc = State('doc', {
         return _.assign({}, state, { viewMode })
       case 'view_parallel':
         return _.assign({}, state, { viewMode })
-      case 'edit':
-        let { targetSentenceId } = options
-        return _.assign({}, state, { viewMode, targetSentenceId })
     }
     throw new Error(`Does not match any mode: ${options.viewMode}`)
   },

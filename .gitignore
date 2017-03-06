@@ -31,6 +31,7 @@ tmp
 
 .npmrc
 .DS_Store
+*.rdb
 
 var
 public/js

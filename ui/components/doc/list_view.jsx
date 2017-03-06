@@ -4,12 +4,16 @@ import { Actions } from 'jumpstate'
 import FlatButton from 'material-ui/FlatButton'
 import { List, ListItem } from 'material-ui/List'
 import { pathTo } from '../../helpers/util'
+import styles from '../../css/doc.css'
 import url from '../../helpers/url'
 
-const twoText = (first, second) => (
+const listItem = (original, translated, showOriginal) => (
   <div>
-    <div>{ first }</div>
-    <div>{ second }</div>
+    {
+      showOriginal &&
+      <div className={styles['list-view-original']}>{ original }</div>
+    }
+    <div className={styles['list-view-translated']}>{ translated }</div>
   </div>
 )
 
@@ -19,16 +23,16 @@ const twoText = (first, second) => (
 class ListView extends React.Component {
   render () {
     const s = this
-    let { sentences, styles, did } = s.props
+    let { sentences, did, showOriginal } = s.props
     return (
       <div>
         <List>
           {
             sentences.map(({id, original, translated}) =>
-              <div key={id}>
+              <div key={id} className={styles['list-view-item-wrap']}>
                 <ListItem
-                  primaryText={twoText(original, translated)}
-                  onClick={pathTo(url.docPageOnEdit(did, id))}
+                  primaryText={listItem(original, translated, showOriginal)}
+                  onClick={pathTo(url.sentencePage(did, id))}
                 />
               </div>
             )
@@ -41,8 +45,7 @@ class ListView extends React.Component {
 
 ListView.propTypes = {
   sentences: types.array,
-  did: types.string,
-  styles: types.object
+  did: types.string
 }
 
 export default ListView
