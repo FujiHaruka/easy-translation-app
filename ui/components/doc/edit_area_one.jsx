@@ -18,17 +18,17 @@ class EditAreaOne extends React.Component {
         <div>
           <FlatButton
             label='Back to list'
-            onClick={pathTo(url.editPageListMode(did))}
+            onClick={pathTo(url.docPageOnListView(did))}
           />
           <FlatButton
             label='Save'
             onClick={s.save.bind(s)}
           />
           {
-            nextId && <FlatButton label='Next' onClick={pathTo(url.editPageOneMode(did, nextId))} />
+            nextId && <FlatButton label='Next' onClick={pathTo(url.docPageOnEdit(did, nextId))} />
           }
           {
-            prevId && <FlatButton label='Prev' onClick={pathTo(url.editPageOneMode(did, prevId))} />
+            prevId && <FlatButton label='Prev' onClick={pathTo(url.docPageOnEdit(did, prevId))} />
           }
         </div>
         <div>

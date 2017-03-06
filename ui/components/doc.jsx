@@ -1,43 +1,48 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import CSSModules from 'react-css-modules'
-import styles from '../css/edit.css'
+import styles from '../css/doc.css'
 import { Actions, getState } from 'jumpstate'
 import co from 'co'
 import { pathTo } from '../helpers/util'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import EditAreaList from './edit/edit_area_list'
-import EditAreaOne from './edit/edit_area_one'
+import ListView from './doc/list_view'
+import EditAreaOne from './doc/edit_area_one'
 import _ from 'lodash'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import FlatButton from 'material-ui/FlatButton'
 import url from '../helpers/url'
 
-const redirectToDashboard = pathTo('/dashboard')
+const redirectToDashboard = pathTo(url.dashboardPage())
+
+/**
+ * Change view mode by url query
+ * @param {string} query.mode - view_list || view_parallel || edit
+ * @param {string} query.s_id - sentence id
+ */
+const viewModeFrom = (query = {}) => {
+  let {
+    mode = 'view_list',
+    sid = ''
+  } = query
+  Actions.doc.changeViewMode({
+    viewMode: mode,
+    targetSentenceId: sid
+  })
+}
 
 class Doc extends React.Component {
   componentWillReceiveProps (props) {
     let { query } = props.location
     if (!_.isEqual(this.props.location.query, query)) {
-      this.viewModeFrom(query)
+      viewModeFrom(query)
     }
-  }
-
-  viewModeFrom (query) {
-    let {
-      view = 'list',
-      s_id = ''
-    } = query
-    Actions.doc.changeViewMode({
-      viewMode: view,
-      targetSentenceId: s_id
-    })
   }
 
   render () {
     const s = this
-    let { targetDoc, viewMode } = s.props.doc
+    let { targetDoc } = s.props.doc
     return (
       <div styleName='wrap'>
         <div styleName='main'>
@@ -51,8 +56,8 @@ class Doc extends React.Component {
             </div>
             <h2>{ targetDoc.filename }</h2>
           </section>
-          <section styleName='edit-area'>
-            { s.renderEditArea() }
+          <section styleName='content'>
+            { s.renderContent() }
           </section>
         </div>
       </div>
@@ -65,25 +70,29 @@ class Doc extends React.Component {
     return co(function * () {
       yield Actions.fetchDocById(id)
       yield Actions.fetchSentences(id)
-      s.viewModeFrom(s.props.location.query)
+      viewModeFrom(s.props.location.query)
     }).catch(e => {
       console.error(e)
       redirectToDashboard()
     })
   }
 
-  renderEditArea () {
+  renderContent () {
     const s = this
     let { viewMode, sentenceMap, targetSentenceId, targetDoc } = s.props.doc
     let did = targetDoc.id
     switch (viewMode) {
-      case 'list':
-        return <EditAreaList
-          sentences={sentenceMap.toArray()}
-          styles={styles}
-          did={did}
+      case 'view_list':
+        return (
+          <ListView
+            sentences={sentenceMap.toArray()}
+            did={targetDoc.id}
+            styles={{}}
           />
-      case 'one':
+        )
+      case 'view_parallel':
+        return null
+      case 'edit':
         {
           let sentence = sentenceMap.get(targetSentenceId)
           let ids = sentenceMap.keySeq().toArray()
@@ -101,13 +110,9 @@ class Doc extends React.Component {
     }
   }
 
-  editAreaOneMode () {
-    return null
-  }
-
   moveToDashbord () {
     Actions.doc.resetTargetDoc()
-    pathTo(url.dashboardPage())()
+    redirectToDashboard()
   }
 }
 

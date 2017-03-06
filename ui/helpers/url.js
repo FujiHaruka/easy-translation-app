@@ -1,3 +1,5 @@
+import assert from 'assert'
+
 const url = {
   dashboardPage () {
     return `/dashboard`
@@ -6,11 +8,18 @@ const url = {
    * @param {string} did - document id
    * @param {string} sid - sentence id
    */
-  editPageOneMode (did, sid) {
-    return `/dashboard/docs/${did}?view=one&s_id=${sid}`
+  docPageOnEdit (did, sid) {
+    assert.ok(did)
+    assert.ok(sid)
+    return `/dashboard/docs/${did}?mode=edit&sid=${sid}`
   },
-  editPageListMode (did) {
-    return `/dashboard/docs/${did}?view=list`
+  docPageOnListView (did) {
+    assert.ok(did)
+    return `/dashboard/docs/${did}?mode=view_list`
+  },
+  docPageOnParallelView (did) {
+    assert.ok(did)
+    return `/dashboard/docs/${did}?mode=view_parallel`
   }
 }
 

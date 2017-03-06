@@ -38,12 +38,15 @@ const doc = State('doc', {
   changeViewMode (state, options) {
     let { viewMode } = options
     switch (viewMode) {
-      case 'list':
+      case 'view_list':
         return _.assign({}, state, { viewMode })
-      case 'one':
+      case 'view_parallel':
+        return _.assign({}, state, { viewMode })
+      case 'edit':
         let { targetSentenceId } = options
         return _.assign({}, state, { viewMode, targetSentenceId })
     }
+    throw new Error(`Does not match any mode: ${options.viewMode}`)
   },
 
   resetTargetDoc (state) {
