@@ -62,7 +62,7 @@ class Sentence extends React.Component {
               id={TEXTAREA_ID}
               styleName='textarea'
               defaultValue={translated}
-              rows={3}
+              rows={4}
           />
           </div>
           <div styleName='navi-buttons'>

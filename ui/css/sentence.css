@@ -16,6 +16,16 @@
   padding: 0.5em;
   margin: 1em 0;
   box-sizing: border-box;
+  color: #555;
+  line-height: 1.2em;
+  letter-spacing: .02em;
+  border-radius: 2px;
+  border: 1px #ccc solid;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: 1px #dedede solid;
 }
 
 .navi-buttons {

@@ -7,6 +7,9 @@ html, body {
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', '游ゴシック  Medium', meiryo, sans-serif;
   background-color: white;
+  line-height: 1.2em;
+  background-color: white;
+  letter-spacing: .02em;
 }
 
 h1, h2, h3, h4, h5 {
