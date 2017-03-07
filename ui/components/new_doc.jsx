@@ -7,6 +7,8 @@ import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/FlatButton'
 import { browserHistory } from 'react-router'
 import styleObject from '../helpers/style_object'
+import { pathTo } from '../helpers/util'
+import url from '../helpers/url'
 
 class NewDoc extends React.Component {
   constructor (props) {
@@ -21,9 +23,26 @@ class NewDoc extends React.Component {
     return (
       <div styleName='wrap'>
         <div styleName='main'>
+          <div>
+            <FlatButton
+              label='Dashboard'
+              icon={<i className='fa fa-chevron-left' />}
+              onClick={pathTo(url.dashboardPage())}
+              />
+          </div>
           <Toolbar style={{ background: 'white' }}>
             <ToolbarTitle text='New Document' style={styleObject.toolbarTitle} />
           </Toolbar>
+          <div styleName='submit-wrap'>
+            <FlatButton
+              label='Create Document'
+              primary
+              onClick={s.submit.bind(s)}
+              />
+          </div>
+          <div styleName='err'>
+            {errs.createFailed}
+          </div>
           <div>
             <TextField
               id='newdoc-name'
@@ -32,6 +51,9 @@ class NewDoc extends React.Component {
               style={{ color: '#666' }}
           />
           </div>
+          <div styleName='err'>
+            {errs.emptyText}
+          </div>
           <div>
             <textarea
               id='newdoc-text'
@@ -39,21 +61,6 @@ class NewDoc extends React.Component {
               rows={30}
               placeholder='Write text.'
             />
-          </div>
-          <div styleName='err'>
-            {errs.emptyText}
-          </div>
-          <div>
-            <div styleName='err'>
-              {errs.createFailed}
-            </div>
-            <div styleName='submit-wrap'>
-              <FlatButton
-                label='Primary'
-                primary
-                onClick={s.submit.bind(s)}
-            />
-            </div>
           </div>
         </div>
       </div>
