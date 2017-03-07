@@ -5,10 +5,11 @@ import { connect } from 'react-redux'
 import { List } from 'material-ui/List'
 import DocListItem from './dashboard/doc_list_item'
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
-import IconButton from 'material-ui/IconButton'
+import FlatButton from 'material-ui/FlatButton'
 import { Actions } from 'jumpstate'
 import co from 'co'
 import { pathTo } from '../helpers/util'
+import styleObject from '../helpers/style_object'
 
 class Dashboard extends React.Component {
   render () {
@@ -18,10 +19,11 @@ class Dashboard extends React.Component {
         <div styleName='main'>
           <Toolbar style={{ background: 'white' }}>
             <ToolbarGroup>
-              <ToolbarTitle text='Documents' />
-              <IconButton
-                tooltip='New Document'
-                iconClassName='fa fa-plus'
+              <ToolbarTitle text='Documents' style={styleObject.toolbarTitle} />
+              <FlatButton
+                label='New Document'
+                icon={<i className='fa fa-plus' />}
+                primary
                 onClick={pathTo('/dashboard/docs/new')}
               />
             </ToolbarGroup>

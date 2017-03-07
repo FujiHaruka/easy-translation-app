@@ -2,9 +2,11 @@ import React from 'react'
 import CSSModules from 'react-css-modules'
 import styles from '../css/new_doc.css'
 import { connect } from 'react-redux'
+import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
 import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/FlatButton'
 import { browserHistory } from 'react-router'
+import styleObject from '../helpers/style_object'
 
 class NewDoc extends React.Component {
   constructor (props) {
@@ -19,7 +21,9 @@ class NewDoc extends React.Component {
     return (
       <div styleName='wrap'>
         <div styleName='main'>
-          <h2>New Document</h2>
+          <Toolbar style={{ background: 'white' }}>
+            <ToolbarTitle text='New Document' style={styleObject.toolbarTitle} />
+          </Toolbar>
           <div>
             <TextField
               id='newdoc-name'

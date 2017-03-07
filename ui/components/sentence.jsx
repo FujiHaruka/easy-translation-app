@@ -9,19 +9,9 @@ import Chip from 'material-ui/Chip'
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
 import { pathTo } from '../helpers/util'
 import url from '../helpers/url'
+import styleObject from '../helpers/style_object'
 
 const TEXTAREA_ID = 'setnence-translate-textarea'
-
-const chipStyle = {
-  marginBottom: '4px',
-  backgroundColor: '#eeeeee'
-}
-
-const toolbarStyle = {
-  background: 'white',
-  marginBottom: '1.5em',
-  borderBottom: '1px #00bcd4 solid'
-}
 
 const moveToSentence = (did, sid) => () => {
   Actions.doc.setTargetSentence('')
@@ -64,19 +54,20 @@ class Sentence extends React.Component {
               onClick={pathTo(url.docPageOnListView(targetDoc.id))}
             />
           </div>
-          <Toolbar style={toolbarStyle}>
+          <Toolbar style={styleObject.toolbar}>
             <ToolbarGroup>
-              <ToolbarTitle text={targetDoc.filename} style={{ color: '#00bcd4' }} />
+              <ToolbarTitle text={targetDoc.filename} style={styleObject.toolbarTitle} />
               <FlatButton
                 label='機械翻訳'
                 disabled={suggestDisabled}
+                primary
                 icon={<i className='fa fa-language' />}
                 onClick={s.translate}
               />
             </ToolbarGroup>
           </Toolbar>
           <div styleName='original-sentence'>
-            <Chip style={chipStyle}>
+            <Chip style={styleObject.chip}>
               <span styleName='chip'>
                 original
               </span>
@@ -86,7 +77,7 @@ class Sentence extends React.Component {
           {
             suggestDisabled &&
             <div styleName='suggestion-sentence'>
-              <Chip style={chipStyle}>
+              <Chip style={styleObject.chip}>
                 <span styleName='chip'>
                   suggestion
                 </span>

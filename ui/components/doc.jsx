@@ -11,6 +11,7 @@ import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
 import IconButton from 'material-ui/IconButton'
 import FlatButton from 'material-ui/FlatButton'
 import url from '../helpers/url'
+import styleObject from '../helpers/style_object'
 
 const redirectToDashboard = pathTo(url.dashboardPage())
 
@@ -57,17 +58,19 @@ class Doc extends React.Component {
                 onClick={s.moveToDashbord}
                 />
             </div>
-            <Toolbar style={{ background: 'white' }}>
+            <Toolbar style={styleObject.toolbar}>
               <ToolbarGroup>
-                <ToolbarTitle text={targetDoc.filename} />
+                <ToolbarTitle text={targetDoc.filename} style={styleObject.toolbarTitle} />
                 <FlatButton
                   label='Download'
                   icon={<i className='fa fa-download' />}
+                  primary
                   />
                 <FlatButton
                   label={showOriginal ? 'Hide English' : 'Show English'}
                   icon={<i className='fa fa-filter' />}
                   onClick={() => s.setState({ showOriginal: !showOriginal })}
+                  primary
                 />
               </ToolbarGroup>
             </Toolbar>
