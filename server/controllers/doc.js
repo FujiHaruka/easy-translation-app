@@ -23,7 +23,7 @@ module.exports = {
     // TODO Enable set languages. Now, only allowed 'en/ja'.
     let languages = {
       original: 'en',
-      japanese: 'ja'
+      translated: 'ja'
     }
     let doc = {
       id,

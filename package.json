@@ -57,6 +57,7 @@
   "dependencies": {
     "co": "^4.6.0",
     "commander": "^2.9.0",
+    "google-translate": "^2.0.4",
     "koa-sendfile": "^2.0.0",
     "match-index": "^1.0.1",
     "moment": "^2.17.1",
