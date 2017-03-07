@@ -50,6 +50,13 @@
   padding: 1em 0;
 }
 
+.inline {
+  display: inline-block;
+}
+
+.suggestion-header {
+}
+
 .suggestion-sentence {
   padding: 1em 0;
 }

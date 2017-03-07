@@ -33,6 +33,7 @@ const Index = (
 )
 
 document.addEventListener('DOMContentLoaded', co(function * () {
+  let clipboard = new Clipboard('.copy')
   yield Actions.connectCaller()
   yield Actions.attemptLoginFromStorage()
   render(
@@ -42,3 +43,5 @@ document.addEventListener('DOMContentLoaded', co(function * () {
 }).catch(e => {
   window.alert(e.message)
 }))
+
+/* global Clipboard */

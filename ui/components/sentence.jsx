@@ -5,6 +5,7 @@ import { Actions, getState } from 'jumpstate'
 import styles from '../css/sentence.css'
 import CSSModules from 'react-css-modules'
 import FlatButton from 'material-ui/FlatButton'
+import IconButton from 'material-ui/IconButton'
 import Chip from 'material-ui/Chip'
 import WordLinkedText from './sentence/word_linked_text'
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
@@ -77,11 +78,24 @@ class Sentence extends React.Component {
           {
             suggestDisabled &&
             <div styleName='suggestion-sentence'>
-              <Chip style={styleObject.chip}>
-                <span styleName='chip'>
-                  suggestion
-                </span>
-              </Chip>
+              <div styleName='suggestion-header'>
+                <div styleName='inline'>
+                  <Chip style={styleObject.chip}>
+                    <span styleName='chip'>
+                      suggestion
+                    </span>
+                  </Chip>
+                </div>
+                <IconButton
+                  label='Copy'
+                  className='copy'
+                  iconClassName='fa fa-clipboard'
+                  data-clipboard-text={suggestion}
+                  tooltip='Copy to clipboard'
+                  tooltipPosition='top-center'
+                  iconStyle={{ fontSize: '18px' }}
+                />
+              </div>
               {suggestion}
             </div>
           }
