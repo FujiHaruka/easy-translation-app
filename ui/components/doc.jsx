@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules'
 import styles from '../css/doc.css'
 import { Actions } from 'jumpstate'
 import co from 'co'
-import { pathTo } from '../helpers/util'
+import { pathTo, objectURLFrom } from '../helpers/util'
 import ListView from './doc/list_view'
 import _ from 'lodash'
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
@@ -45,8 +45,9 @@ class Doc extends React.Component {
 
   render () {
     const s = this
-    let { targetDoc } = s.props.doc
+    let { targetDoc, sentenceMap } = s.props.doc
     let { showOriginal } = s.state
+    let sentences = sentenceMap.toArray()
     return (
       <div styleName='wrap'>
         <div styleName='main'>
@@ -64,6 +65,8 @@ class Doc extends React.Component {
                 <FlatButton
                   label='Download'
                   icon={<i className='fa fa-download' />}
+                  href={objectURLFrom(sentences)}
+                  download={targetDoc.filename}
                   primary
                   />
                 <FlatButton
