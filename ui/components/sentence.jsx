@@ -5,11 +5,23 @@ import { Actions, getState } from 'jumpstate'
 import styles from '../css/sentence.css'
 import CSSModules from 'react-css-modules'
 import FlatButton from 'material-ui/FlatButton'
+import Chip from 'material-ui/Chip'
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
 import { pathTo } from '../helpers/util'
 import url from '../helpers/url'
 
 const TEXTAREA_ID = 'setnence-translate-textarea'
+
+const chipStyle = {
+  marginBottom: '4px',
+  backgroundColor: '#eeeeee'
+}
+
+const toolbarStyle = {
+  background: 'white',
+  marginBottom: '1.5em',
+  borderBottom: '1px #00bcd4 solid'
+}
 
 const moveToSentence = (did, sid) => () => {
   Actions.doc.setTargetSentence('')
@@ -33,6 +45,9 @@ class Sentence extends React.Component {
     if (!sentence) {
       return <div />
     }
+    let { suggestion } = s.props
+    console.log(suggestion)
+    let suggestDisabled = suggestion.length > 0
     let ids = sentenceMap.keySeq().toArray()
     let idIndex = ids.indexOf(sentence.id)
     let prevId = ids[idIndex - 1] || ''
@@ -49,21 +64,43 @@ class Sentence extends React.Component {
               onClick={pathTo(url.docPageOnListView(targetDoc.id))}
             />
           </div>
-          <Toolbar style={{ background: 'white', marginBottom: '1.5em' }}>
+          <Toolbar style={toolbarStyle}>
             <ToolbarGroup>
-              <ToolbarTitle text={targetDoc.filename} />
+              <ToolbarTitle text={targetDoc.filename} style={{ color: '#00bcd4' }} />
+              <FlatButton
+                label='機械翻訳'
+                disabled={suggestDisabled}
+                icon={<i className='fa fa-language' />}
+                onClick={s.translate}
+              />
             </ToolbarGroup>
           </Toolbar>
-          <div>
+          <div styleName='original-sentence'>
+            <Chip style={chipStyle}>
+              <span styleName='chip'>
+                original
+              </span>
+            </Chip>
             {original}
           </div>
+          {
+            suggestDisabled &&
+            <div styleName='suggestion-sentence'>
+              <Chip style={chipStyle}>
+                <span styleName='chip'>
+                  suggestion
+                </span>
+              </Chip>
+              {suggestion}
+            </div>
+          }
           <div>
             <textarea
               id={TEXTAREA_ID}
               styleName='textarea'
               defaultValue={translated}
               rows={4}
-          />
+            />
           </div>
           <div styleName='navi-buttons'>
             {
@@ -119,6 +156,7 @@ class Sentence extends React.Component {
   updatePage (props) {
     let { did, sid } = props.params
     return co(function * () {
+      Actions.suggestion.set()
       Actions.doc.setTargetSentence(sid)
       yield Actions.fetchDocById(did)
       yield Actions.fetchSentences(did)
@@ -149,6 +187,15 @@ class Sentence extends React.Component {
         translated
       }]
       yield Actions.updateTranslations({ did: targetDoc.id, updateList })
+    })
+  }
+
+  translate () {
+    return co(function * () {
+      let { sentenceMap, targetSentenceId } = getState().doc
+      let sentence = sentenceMap.get(targetSentenceId)
+      let { original } = sentence
+      yield Actions.suggestTranslate(original)
     })
   }
 }

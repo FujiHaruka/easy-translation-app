@@ -45,3 +45,16 @@
   top: 0;
   left: 0;
 }
+
+.original-sentence {
+  padding: 1em 0;
+}
+
+.suggestion-sentence {
+  padding: 1em 0;
+}
+
+.chip {
+  color: #333;
+  font-size: 0.9em;
+}
