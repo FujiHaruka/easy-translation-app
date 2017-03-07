@@ -6,6 +6,7 @@ import styles from '../css/sentence.css'
 import CSSModules from 'react-css-modules'
 import FlatButton from 'material-ui/FlatButton'
 import Chip from 'material-ui/Chip'
+import WordLinkedText from './sentence/word_linked_text'
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
 import { pathTo } from '../helpers/util'
 import url from '../helpers/url'
@@ -36,7 +37,6 @@ class Sentence extends React.Component {
       return <div />
     }
     let { suggestion } = s.props
-    console.log(suggestion)
     let suggestDisabled = suggestion.length > 0
     let ids = sentenceMap.keySeq().toArray()
     let idIndex = ids.indexOf(sentence.id)
@@ -72,7 +72,7 @@ class Sentence extends React.Component {
                 original
               </span>
             </Chip>
-            {original}
+            <WordLinkedText text={original} />
           </div>
           {
             suggestDisabled &&
