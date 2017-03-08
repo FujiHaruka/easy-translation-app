@@ -66,10 +66,6 @@ const Doc = Model('doc', {
     translated: {
       type: String
     }
-  },
-  updateAt: {
-    type: Date,
-    default: Date.now
   }
 })
 
@@ -94,10 +90,6 @@ const Sentence = Model('sentence', {
   translated: {
     type: String,
     default: ''
-  },
-  updateAt: {
-    type: Date,
-    default: Date.now
   }
 })
 

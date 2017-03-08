@@ -2,7 +2,8 @@ const uuid = require('uuid')
 const assert = require('assert')
 const { OK, ERR } = require('../constants')
 const {
-  Sentence
+  Sentence,
+  Doc
 } = require('../models')
 const toObj = require('../helpers/to_obj')
 
@@ -23,9 +24,10 @@ module.exports = {
     }
   },
 
-  updateSentenceTranslation: async ({ id, translated }) => {
+  updateSentenceTranslation: async ({ did, id, translated }) => {
     assertStr(id, translated)
     await Sentence.update({ id }, { translated }).exec()
+    await Doc.update({ id: did }, { updatedAt: new Date() }).exec()
     return OK
   }
 }

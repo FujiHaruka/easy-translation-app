@@ -21,7 +21,7 @@ const doc = State('doc', {
   setDocs (state, { docs }) {
     let docMap = Im.OrderedMap(_.keyBy(docs, 'id'))
     // TODO enable to sort other way
-    docMap = docMap.sortBy(doc => (-1) * new Date(doc.updateAt))
+    docMap = docMap.sortBy(doc => (-1) * new Date(doc.updatedAt))
     return _.assign({}, state, { docMap })
   },
 
@@ -106,7 +106,7 @@ Effect('updateTranslations', ({did, updateList}) => co(function * () {
   let { userKey, token } = getState().user
   for (let updated of updateList) {
     let {id, translated} = updated
-    yield api.updateSentenceTranslation({id, translated, userKey, token})
+    yield api.updateSentenceTranslation({did, id, translated, userKey, token})
   }
   yield Actions.fetchSentences(did)
 }))

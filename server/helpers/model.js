@@ -10,7 +10,10 @@ mongoose.Promise = global.Promise
  * @return - mongoose model
  */
 function Model (name, definition) {
-  let schema = new mongoose.Schema(definition)
+  let schema = new mongoose.Schema(definition, {
+    timestamps: true,
+    toObject: { getters: true }
+  })
   let model = mongoose.model(name, schema)
   return model
 }

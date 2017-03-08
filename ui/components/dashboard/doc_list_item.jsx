@@ -19,9 +19,9 @@ class DocListItem extends React.Component {
     let {
       name,
       did,
-      updateAt
+      updatedAt
     } = s.props
-    let update = moment(updateAt).format('YYYY-MM-DD hh:mm')
+    let update = moment(updatedAt).format('YYYY-MM-DD HH:mm')
     let secondaryText = `Last update: ${update}`
     return (
       <Paper zDepth={1} style={paperStyle}>
@@ -62,7 +62,7 @@ class DocListItem extends React.Component {
 DocListItem.propTypes = {
   name: types.string,
   id: types.string,
-  updateAt: types.object
+  updatedAt: types.object
 }
 
 export default DocListItem

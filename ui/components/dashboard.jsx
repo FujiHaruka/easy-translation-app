@@ -45,7 +45,7 @@ class Dashboard extends React.Component {
               <DocListItem
                 key={doc.id}
                 name={doc.filename}
-                updateAt={new Date(doc.updateAt)}
+                updatedAt={new Date(doc.updatedAt)}
                 did={doc.id} />
           )
         }
