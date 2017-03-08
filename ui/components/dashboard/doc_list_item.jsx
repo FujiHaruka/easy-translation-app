@@ -5,6 +5,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
 import Paper from 'material-ui/Paper'
 import Dialog from 'material-ui/Dialog'
 import { grey400 } from 'material-ui/styles/colors'
@@ -36,7 +37,17 @@ class DocListItem extends React.Component {
         onTouchTap={s.deleteFile}
       />
     ]
-    s.changeNameActions = []
+    s.changeNameActions = [
+      <FlatButton
+        label='Cancel'
+        onTouchTap={s.closeChangeNameDialog}
+      />,
+      <FlatButton
+        label='OK'
+        primary
+        onTouchTap={s.changeName}
+      />
+    ]
     s.state = {
       isOpenDeleteDialog: false,
       isOpenChangeNameDialog: false
@@ -75,6 +86,19 @@ class DocListItem extends React.Component {
           >
           Are you sure to delete the file?
         </Dialog>
+
+        <Dialog
+          title='Change the file name'
+          actions={s.changeNameActions}
+          modal={false}
+          open={isOpenChangeNameDialog}
+          onRequestClose={s.openChangeNameDialog}
+          >
+          <TextField
+            defaultValue={name}
+            id={`doc-list-item-change-${name}`}
+          />
+        </Dialog>
       </Paper>
     )
   }
@@ -104,7 +128,20 @@ class DocListItem extends React.Component {
 
   changeName () {
     const s = this
-    s.closeChangeNameDialog()
+    let filename = document.getElementById(`doc-list-item-change-${s.props.name}`).value
+    if (!filename) {
+      console.error('Text field empty.')
+      return
+    }
+    return co(function * () {
+      let state = getState()
+      let { api } = state.caller
+      let { userKey, token } = state.user
+      let id = s.props.did
+      yield api.updateDocName({ userKey, token, id, filename })
+      s.closeChangeNameDialog()
+      yield Actions.fetchDocs()
+    })
   }
 
   deleteFile () {
@@ -139,7 +176,7 @@ class DocListItem extends React.Component {
 
 DocListItem.propTypes = {
   name: types.string,
-  id: types.string,
+  did: types.string,
   updatedAt: types.object
 }
 
