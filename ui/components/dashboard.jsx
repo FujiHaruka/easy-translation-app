@@ -10,6 +10,7 @@ import { Actions } from 'jumpstate'
 import co from 'co'
 import { pathTo } from '../helpers/util'
 import styleObject from '../helpers/style_object'
+import url from '../helpers/url.js'
 
 class Dashboard extends React.Component {
   render () {
@@ -21,10 +22,10 @@ class Dashboard extends React.Component {
             <ToolbarGroup>
               <ToolbarTitle text='Documents' style={styleObject.toolbarTitle} />
               <FlatButton
-                label='New Document'
+                label='New'
                 icon={<i className='fa fa-plus' />}
                 primary
-                onClick={pathTo('/dashboard/docs/new')}
+                onClick={pathTo(url.newDocPage())}
               />
             </ToolbarGroup>
           </Toolbar>

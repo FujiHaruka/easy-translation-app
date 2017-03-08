@@ -1,4 +1,6 @@
 import React from 'react'
+import CSSModules from 'react-css-modules'
+import styles from '../css/app.css'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
@@ -9,7 +11,7 @@ import store from '../store'
 import { Provider } from 'react-redux'
 injectTapEventPlugin()
 
-export default class App extends React.Component {
+class App extends React.Component {
   render () {
     const s = this
     let { loggedIn } = getState().user
@@ -18,7 +20,7 @@ export default class App extends React.Component {
         <MuiThemeProvider>
           <div>
             <AppBar
-              title='Easy Translation'
+              title={<a href='/' className={styles.title} >Easy Translation</a>}
               showMenuIconButton={false}
               iconElementRight={s.signButton(loggedIn)}
               />
@@ -43,3 +45,5 @@ export default class App extends React.Component {
     )
   }
 }
+
+export default CSSModules(App, styles)

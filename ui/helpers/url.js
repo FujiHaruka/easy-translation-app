@@ -4,6 +4,9 @@ const url = {
   dashboardPage () {
     return `/dashboard`
   },
+  newDocPage () {
+    return '/dashboard/docs/new'
+  },
   /**
    * @param {string} did - document id
    * @param {string} sid - sentence id
