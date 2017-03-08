@@ -2,7 +2,7 @@ const uuid = require('uuid')
 const assert = require('assert')
 const parseDocText = require('../helpers/parse_doc_text')
 const { OK, ERR } = require('../constants')
-const toObj = require('../helpers/to_obj')
+const omitUnderscore = require('../helpers/omit_underscore')
 const {
   Doc,
   Sentence
@@ -61,7 +61,7 @@ module.exports = {
 
   getDocs: async ({ userKey }) => {
     let docs = await Doc.find({ userKey }).exec()
-    docs = docs.map(doc => toObj(doc))
+    docs = docs.map(doc => omitUnderscore(doc))
     return {
       docs
     }
@@ -72,7 +72,7 @@ module.exports = {
     if (!doc || doc.userKey !== userKey) {
       return ERR('Not Found')
     }
-    doc = toObj(doc)
+    doc = omitUnderscore(doc)
     return {
       ok: true,
       doc

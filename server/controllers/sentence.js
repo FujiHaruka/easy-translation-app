@@ -5,7 +5,7 @@ const {
   Sentence,
   Doc
 } = require('../models')
-const toObj = require('../helpers/to_obj')
+const omitUnderscore = require('../helpers/omit_underscore')
 
 const assertStr = (...values) => {
   for (let value of values) {
@@ -18,9 +18,10 @@ module.exports = {
     assertStr(did)
     let sentences = await Sentence.find({ did }).exec()
     sentences.sort((s1, s2) => s1.order - s2.order)
+    sentences = sentences.map(omitUnderscore)
     return {
       ok: true,
-      sentences: toObj(sentences)
+      sentences
     }
   },
 
