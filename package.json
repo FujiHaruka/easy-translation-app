@@ -6,7 +6,8 @@
     "test": "NODE_ENV=test mocha --recursive --harmony-async-await",
     "start": "node --harmony-async-await server/app.js",
     "watch": "webpack --config webpack.config.dev.js --watch",
-    "prepare": "./ci/setup.sh"
+    "compile": "webpack --config webpack.config.dev.js",
+    "prepare": "./ci/setup.sh && npm run compile"
   },
   "repository": "FujiHaruka/easy-translation-app",
   "keywords": [

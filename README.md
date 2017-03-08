@@ -26,7 +26,7 @@ $ npm install
 
 ### STEP 2 環境変数の設定
 
-`/env/index.js` を編集して、 Mongo DB と Redis のホスト、ポートを設定します。また、 Google 翻訳の API KEY も必要です。環境変数 `GOOGLE_TRANSLATE_API_KEY` に API KEY を設定してください。
+`env/index.js` を編集して、 Mongo DB と Redis のホスト、ポートを設定します。また、 Google 翻訳の API KEY も必要です。環境変数 `GOOGLE_TRANSLATE_API_KEY` に API KEY を設定してください。
 
 ### STEP 3 ユーザー登録
 
