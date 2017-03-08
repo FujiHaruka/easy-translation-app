@@ -5,7 +5,8 @@
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive --harmony-async-await",
     "start": "node --harmony-async-await server/app.js",
-    "watch": "webpack --config webpack.config.dev.js --watch"
+    "watch": "webpack --config webpack.config.dev.js --watch",
+    "prepare": "./ci/setup.sh"
   },
   "repository": "FujiHaruka/easy-translation-app",
   "keywords": [
@@ -52,8 +53,8 @@
     "webpack-dev-server": "^2.4.1"
   },
   "engines": {
-    "node": ">=6",
-    "npm": ">=3"
+    "node": ">=7",
+    "npm": ">=4"
   },
   "dependencies": {
     "co": "^4.6.0",
