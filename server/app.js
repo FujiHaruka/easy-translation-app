@@ -24,7 +24,7 @@ let server = Hub({
   }
 })
 
-mongoose.set('debug', true)
+// mongoose.set('debug', true)
 mongoose.connect(url.MONGO)
 
 console.log(`Server listening on port ${port.APP}`)
