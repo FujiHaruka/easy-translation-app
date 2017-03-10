@@ -1,4 +1,4 @@
-const env = (name, dev) => process.env[`ETA_${name}`] || dev
+const env = (name, dev) => process.env[name] || dev
 
 let test = process.env.NODE_ENV === 'test'
 
