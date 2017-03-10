@@ -6,8 +6,7 @@
     "test": "NODE_ENV=test mocha --recursive --harmony-async-await",
     "start": "node --harmony-async-await server/app.js",
     "watch": "webpack --config webpack.config.dev.js --watch",
-    "compile": "webpack --config webpack.config.dev.js",
-    "heroku-postbuild": "./bin/register_user.js -u $USER -p $PASSWORD"
+    "compile": "webpack --config webpack.config.dev.js"
   },
   "repository": "FujiHaruka/easy-translation-app",
   "keywords": [
