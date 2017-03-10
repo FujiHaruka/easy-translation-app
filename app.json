@@ -1,0 +1,14 @@
+{
+  "name": "easy-translation-app",
+  "description": "",
+  "env": {
+    "NODE_ENV": {
+      "value": "production"
+    }
+  },
+  "addons": [
+    "heroku-redis:hobby-dev",
+    "mongolab:sandbox"
+  ],
+  "scripts": {}
+}

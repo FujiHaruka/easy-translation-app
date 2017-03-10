@@ -3,7 +3,7 @@ const env = (name, dev) => process.env[`ETA_${name}`] || dev
 let test = process.env.NODE_ENV === 'test'
 
 const port = {
-  APP: env('APP_PORT', 3000),
+  APP: env('PORT', 3000),
   REDIS: env('REDIS_PORT', 6379),
   MONGO: env('MONGO_PORT', 27011)
 }

@@ -7,7 +7,7 @@
     "start": "node --harmony-async-await server/app.js",
     "watch": "webpack --config webpack.config.dev.js --watch",
     "compile": "webpack --config webpack.config.dev.js",
-    "prepare": "./ci/setup.sh && npm run compile"
+    "heroku-postbuild": "./bin/register_user.js -u $USER -p $PASSWORD"
   },
   "repository": "FujiHaruka/easy-translation-app",
   "keywords": [
