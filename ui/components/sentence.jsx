@@ -198,6 +198,9 @@ class Sentence extends React.Component {
         translated
       }]
       yield Actions.updateTranslations({ did: targetDoc.id, updateList })
+    }).catch(e => {
+      window.alert('保存に失敗しました。')
+      window.location.href = window.location.origin
     })
   }
 
