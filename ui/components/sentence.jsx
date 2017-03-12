@@ -15,19 +15,15 @@ import styleObject from '../helpers/style_object'
 
 const TEXTAREA_ID = 'setnence-translate-textarea'
 
-const moveToSentence = (did, sid) => () => {
-  Actions.doc.setTargetSentence('')
-  document.getElementById(TEXTAREA_ID).value = ''
-  pathTo(url.sentencePage(did, sid))()
-}
-
 /**
  * Edit area for 'one' mode
  */
 class Sentence extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { saveTimer: null }
+    const s = this
+    s.moveToOtherPage = s.moveToOtherPage.bind(s)
+    s.state = { saveTimer: null }
   }
 
   render () {
@@ -52,7 +48,7 @@ class Sentence extends React.Component {
             <FlatButton
               label='Document'
               icon={<i className='fa fa-chevron-left' />}
-              onClick={pathTo(url.docPageOnListView(targetDoc.id))}
+              onClick={s.moveToOtherPage(pathTo(url.docPageOnListView(targetDoc.id)))}
             />
           </div>
           <Toolbar style={styleObject.toolbar}>
@@ -114,7 +110,7 @@ class Sentence extends React.Component {
                 <FlatButton
                   label='Prev'
                   icon={<i className='fa fa-chevron-left' />}
-                  onClick={moveToSentence(targetDoc.id, prevId)}
+                  onClick={s.moveToOtherPage(pathTo(url.sentencePage(targetDoc.id, prevId)))}
                 />
               </div>
             }
@@ -125,7 +121,7 @@ class Sentence extends React.Component {
                   label='Next'
                   labelPosition='before'
                   icon={<i className='fa fa-chevron-right' />}
-                  onClick={moveToSentence(targetDoc.id, nextId)}
+                  onClick={s.moveToOtherPage(pathTo(url.sentencePage(targetDoc.id, nextId)))}
                   />
               </div>
             }
@@ -175,6 +171,16 @@ class Sentence extends React.Component {
     }).catch(e => {
       console.error(e)
       pathTo(url.dashboardPage())()
+    })
+  }
+
+  moveToOtherPage (move) {
+    const s = this
+    return () => co(function * () {
+      yield s.save()
+      document.getElementById(TEXTAREA_ID).value = ''
+      Actions.doc.setTargetSentence('')
+      move()
     })
   }
 
