@@ -46,14 +46,13 @@ class Sentence extends React.Component {
         <div styleName='main'>
           <div>
             <FlatButton
-              label='Document'
+              label={targetDoc.filename}
               icon={<i className='fa fa-chevron-left' />}
               onClick={s.moveToOtherPage(pathTo(url.docPageOnListView(targetDoc.id)))}
             />
           </div>
           <Toolbar style={styleObject.toolbar}>
             <ToolbarGroup>
-              <ToolbarTitle text={targetDoc.filename} style={styleObject.toolbarTitle} />
               <FlatButton
                 label='機械翻訳'
                 disabled={suggestDisabled}
@@ -64,11 +63,13 @@ class Sentence extends React.Component {
             </ToolbarGroup>
           </Toolbar>
           <div styleName='original-sentence'>
-            <Chip style={styleObject.chip}>
-              <span styleName='chip'>
+            <div>
+              <Chip style={styleObject.chip}>
+                <span styleName='chip'>
                 original
-              </span>
-            </Chip>
+                </span>
+              </Chip>
+            </div>
             <WordLinkedText text={original} />
           </div>
           {
