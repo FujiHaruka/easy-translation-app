@@ -16,9 +16,9 @@ const url = {
     assert.ok(sid)
     return `/dashboard/docs/${did}/${sid}`
   },
-  docPageOnListView (did) {
+  docPageOnListView (did, sid = '') {
     assert.ok(did)
-    return `/dashboard/docs/${did}?mode=view_list`
+    return `/dashboard/docs/${did}?mode=view_list#${sid}`
   },
   docPageOnParallelView (did) {
     assert.ok(did)

@@ -8,7 +8,6 @@ import { pathTo, objectURLFrom } from '../helpers/util'
 import ListView from './doc/list_view'
 import _ from 'lodash'
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
-import IconButton from 'material-ui/IconButton'
 import FlatButton from 'material-ui/FlatButton'
 import url from '../helpers/url'
 import styleObject from '../helpers/style_object'
@@ -26,6 +25,18 @@ const viewModeFrom = (query = {}) => {
   Actions.doc.changeViewMode({
     viewMode: mode
   })
+}
+
+const scrollToId = (hash) => {
+  let id = hash.slice(1)
+  if (!id) {
+    window.scrollTo(0, 0)
+    return
+  }
+  let element = document.getElementById(id)
+  if (element) {
+    element.scrollIntoView()
+  }
 }
 
 class Doc extends React.Component {
@@ -93,6 +104,7 @@ class Doc extends React.Component {
       yield Actions.fetchDocById(id)
       yield Actions.fetchSentences(id)
       viewModeFrom(s.props.location.query)
+      scrollToId(s.props.location.hash)
     }).catch(e => {
       console.error(e)
       redirectToDashboard()
