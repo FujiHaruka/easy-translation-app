@@ -22,6 +22,7 @@
   border-radius: 2px;
   border: 1px #ccc solid;
   resize: vertical;
+  font-size: 1.2em;
 }
 
 .textarea:focus {

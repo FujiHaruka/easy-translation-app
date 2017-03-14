@@ -7,19 +7,14 @@ import CSSModules from 'react-css-modules'
 import FlatButton from 'material-ui/FlatButton'
 import IconButton from 'material-ui/IconButton'
 import Chip from 'material-ui/Chip'
+import Toggle from 'material-ui/Toggle'
 import WordLinkedText from './sentence/word_linked_text'
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar'
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import { pathTo } from '../helpers/util'
 import url from '../helpers/url'
 import styleObject from '../helpers/style_object'
 
 const TEXTAREA_ID = 'setnence-translate-textarea'
-
-const moveToSentence = (did, sid) => () => {
-  Actions.doc.setTargetSentence('')
-  document.getElementById(TEXTAREA_ID).value = ''
-  pathTo(url.sentencePage(did, sid))()
-}
 
 /**
  * Edit area for 'one' mode
@@ -27,12 +22,15 @@ const moveToSentence = (did, sid) => () => {
 class Sentence extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { saveTimer: null }
+    const s = this
+    s.moveToOtherPage = s.moveToOtherPage.bind(s)
+    s.state = { saveTimer: null }
   }
 
   render () {
     const s = this
     let { sentenceMap, targetSentenceId, targetDoc } = s.props.doc
+    let { dictLink } = s.props.config
     let sentence = sentenceMap.get(targetSentenceId)
     if (!sentence) {
       return <div />
@@ -50,14 +48,13 @@ class Sentence extends React.Component {
         <div styleName='main'>
           <div>
             <FlatButton
-              label='Document'
+              label={targetDoc.filename}
               icon={<i className='fa fa-chevron-left' />}
-              onClick={pathTo(url.docPageOnListView(targetDoc.id))}
+              onClick={s.moveToOtherPage(pathTo(url.docPageOnListView(targetDoc.id)))}
             />
           </div>
           <Toolbar style={styleObject.toolbar}>
             <ToolbarGroup>
-              <ToolbarTitle text={targetDoc.filename} style={styleObject.toolbarTitle} />
               <FlatButton
                 label='機械翻訳'
                 disabled={suggestDisabled}
@@ -65,15 +62,28 @@ class Sentence extends React.Component {
                 icon={<i className='fa fa-language' />}
                 onClick={s.translate}
               />
+              <Toggle
+                label='辞書リンク'
+                defaultToggled={dictLink}
+                onToggle={s.toggleDictLink}
+                labelPosition='right'
+                style={{margin: 20}}
+              />
             </ToolbarGroup>
           </Toolbar>
           <div styleName='original-sentence'>
-            <Chip style={styleObject.chip}>
-              <span styleName='chip'>
+            <div>
+              <Chip style={styleObject.chip}>
+                <span styleName='chip'>
                 original
-              </span>
-            </Chip>
-            <WordLinkedText text={original} />
+                </span>
+              </Chip>
+            </div>
+            {
+              dictLink
+                ? <WordLinkedText text={original} />
+                : original
+            }
           </div>
           {
             suggestDisabled &&
@@ -114,7 +124,7 @@ class Sentence extends React.Component {
                 <FlatButton
                   label='Prev'
                   icon={<i className='fa fa-chevron-left' />}
-                  onClick={moveToSentence(targetDoc.id, prevId)}
+                  onClick={s.moveToOtherPage(pathTo(url.sentencePage(targetDoc.id, prevId)))}
                 />
               </div>
             }
@@ -125,7 +135,7 @@ class Sentence extends React.Component {
                   label='Next'
                   labelPosition='before'
                   icon={<i className='fa fa-chevron-right' />}
-                  onClick={moveToSentence(targetDoc.id, nextId)}
+                  onClick={s.moveToOtherPage(pathTo(url.sentencePage(targetDoc.id, nextId)))}
                   />
               </div>
             }
@@ -178,6 +188,16 @@ class Sentence extends React.Component {
     })
   }
 
+  moveToOtherPage (move) {
+    const s = this
+    return () => co(function * () {
+      yield s.save()
+      document.getElementById(TEXTAREA_ID).value = ''
+      Actions.doc.setTargetSentence('')
+      move()
+    })
+  }
+
   save () {
     return co(function * () {
       let { targetDoc, sentenceMap, targetSentenceId } = getState().doc
@@ -192,6 +212,9 @@ class Sentence extends React.Component {
         translated
       }]
       yield Actions.updateTranslations({ did: targetDoc.id, updateList })
+    }).catch(e => {
+      window.alert('保存に失敗しました。')
+      window.location.href = window.location.origin
     })
   }
 
@@ -202,6 +225,10 @@ class Sentence extends React.Component {
       let { original } = sentence
       yield Actions.suggestTranslate(original)
     })
+  }
+
+  toggleDictLink () {
+    Actions.config.toggleDictLink()
   }
 }
 
