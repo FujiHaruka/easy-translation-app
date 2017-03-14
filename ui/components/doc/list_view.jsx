@@ -1,7 +1,4 @@
 import React, { PropTypes as types } from 'react'
-import co from 'co'
-import { Actions } from 'jumpstate'
-import FlatButton from 'material-ui/FlatButton'
 import { List, ListItem } from 'material-ui/List'
 import { pathTo } from '../../helpers/util'
 import styles from '../../css/doc.css'
@@ -29,7 +26,7 @@ class ListView extends React.Component {
         <List>
           {
             sentences.map(({id, original, translated}) =>
-              <div key={id} className={styles['list-view-item-wrap']}>
+              <div key={id} id={id} className={styles['list-view-item-wrap']}>
                 <ListItem
                   primaryText={listItem(original, translated, showOriginal)}
                   onClick={pathTo(url.sentencePage(did, id))}

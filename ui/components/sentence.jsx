@@ -50,7 +50,7 @@ class Sentence extends React.Component {
             <FlatButton
               label={targetDoc.filename}
               icon={<i className='fa fa-chevron-left' />}
-              onClick={s.moveToOtherPage(pathTo(url.docPageOnListView(targetDoc.id)))}
+              onClick={s.moveToOtherPage(pathTo(url.docPageOnListView(targetDoc.id, targetSentenceId)))}
             />
           </div>
           <Toolbar style={styleObject.toolbar}>
