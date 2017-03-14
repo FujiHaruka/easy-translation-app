@@ -7,6 +7,7 @@ import CSSModules from 'react-css-modules'
 import FlatButton from 'material-ui/FlatButton'
 import IconButton from 'material-ui/IconButton'
 import Chip from 'material-ui/Chip'
+import Toggle from 'material-ui/Toggle'
 import WordLinkedText from './sentence/word_linked_text'
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import { pathTo } from '../helpers/util'
@@ -29,6 +30,7 @@ class Sentence extends React.Component {
   render () {
     const s = this
     let { sentenceMap, targetSentenceId, targetDoc } = s.props.doc
+    let { dictLink } = s.props.config
     let sentence = sentenceMap.get(targetSentenceId)
     if (!sentence) {
       return <div />
@@ -60,6 +62,13 @@ class Sentence extends React.Component {
                 icon={<i className='fa fa-language' />}
                 onClick={s.translate}
               />
+              <Toggle
+                label='辞書リンク'
+                defaultToggled={dictLink}
+                onToggle={s.toggleDictLink}
+                labelPosition='right'
+                style={{margin: 20}}
+              />
             </ToolbarGroup>
           </Toolbar>
           <div styleName='original-sentence'>
@@ -70,7 +79,11 @@ class Sentence extends React.Component {
                 </span>
               </Chip>
             </div>
-            <WordLinkedText text={original} />
+            {
+              dictLink
+                ? <WordLinkedText text={original} />
+                : original
+            }
           </div>
           {
             suggestDisabled &&
@@ -212,6 +225,10 @@ class Sentence extends React.Component {
       let { original } = sentence
       yield Actions.suggestTranslate(original)
     })
+  }
+
+  toggleDictLink () {
+    Actions.config.toggleDictLink()
   }
 }
 
