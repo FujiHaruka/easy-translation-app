@@ -128,6 +128,9 @@ class Sentence extends React.Component {
                 />
               </div>
             }
+            <div styleName='show-page'>
+              { sentenceMap.keySeq().indexOf(targetSentenceId) + 1 } / { sentenceMap.size }
+            </div>
             {
               nextId &&
               <div styleName='right-button'>
